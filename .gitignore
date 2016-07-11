@@ -10,5 +10,3 @@ node_modules/
 typings/
 !typings/package.d.ts
 
-# Output
-dist/
