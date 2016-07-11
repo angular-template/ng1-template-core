@@ -60,6 +60,12 @@ gulp.task('clean', function(done) {
     clean('./dist/', done);
 });
 
+gulp.task('setup', function() {
+    log('Setting up Git hooks');
+    return gulp.src('./.pre-commit')
+        .pipe($.symlink('./.git/hooks/pre-commit', {force: true}));
+});
+
 function clean(path, done) {
     log(`Deleting: ${path}`);
     del(path);
