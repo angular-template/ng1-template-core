@@ -1,5 +1,5 @@
-/// <reference path="typings/index.d.ts" />
-/// <reference path="typings/package.d.ts" />
+
+
 declare namespace bind {
     function oneWay(): (target: Object, key: string) => void;
     function twoWay(): (target: Object, key: string) => void;
