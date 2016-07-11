@@ -2,12 +2,20 @@
     "compilerOptions": {
         "target": "ES5",
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "outFile": "core.js",
+        "declaration": true,
+        "removeComments": true
     },
-    "files": [
-        "typings/index.d.ts"
-    ],
     "include": [
-        "typings/package.d.ts"
+        "typings/index.d.ts",
+        "typings/package.d.ts",
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "bower_components",
+        "dist",
+        "node_modules",
+        "typings"
     ]
 }

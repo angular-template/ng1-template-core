@@ -20,7 +20,6 @@ gulp.task('compile', function() {
         tsResult.js
             .pipe(gulp.dest('./dist/')),
         tsResult.dts
-            .pipe($.stripLine(`/// <reference path="`))
             .pipe(gulp.dest("./dist/"))
     ]);
 });
@@ -58,7 +57,7 @@ gulp.task('def_generate', function() {
 });
 
 gulp.task('clean', function(done) {
-    clean('./typings/dist/', done);
+    clean('./dist/', done);
 });
 
 function clean(path, done) {

@@ -22,7 +22,6 @@
     "gulp-inject": "^4.1.0",
     "gulp-load-plugins": "^1.2.4",
     "gulp-rename": "^1.2.2",
-    "gulp-strip-line": "0.0.1",
     "gulp-typescript": "^2.13.6",
     "gulp-util": "^3.0.7",
     "merge2": "^1.0.2",
