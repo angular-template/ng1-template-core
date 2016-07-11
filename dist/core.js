@@ -38,7 +38,7 @@ function Component(details, module) {
         ng1Template.core.registerComponent({
             name: details.selector,
             controller: target,
-            templateUrl: details.templateUrl,
+            templateUrl: details.templateUrl || details.templateUrl + "/" + details.templateUrl + ".html",
             templateUrlRoot: details.templateUrlRoot,
             bindings: bindings,
             route: details.route
@@ -50,7 +50,7 @@ function Layout(details, module) {
         ng1Template.core.registerLayout({
             name: details.name,
             controller: target,
-            templateUrl: details.templateUrl,
+            templateUrl: details.templateUrl || "layouts/" + details.templateUrl + "/" + details.templateUrl + ".html",
             templateUrlRoot: details.templateUrlRoot
         }, module);
     };

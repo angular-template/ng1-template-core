@@ -1,5 +1,5 @@
-
-
+/// <reference path="typings/index.d.ts" />
+/// <reference path="typings/package.d.ts" />
 declare namespace bind {
     function oneWay(): (target: Object, key: string) => void;
     function twoWay(): (target: Object, key: string) => void;
@@ -8,7 +8,7 @@ declare namespace bind {
 }
 declare function Component(details: {
     selector: string;
-    templateUrl: string;
+    templateUrl?: string;
     templateUrlRoot?: string;
     route?: ng1Template.core.IComponentRoute;
 }, module: ng.IModule): (target: Function) => void;
