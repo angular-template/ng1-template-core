@@ -11,8 +11,10 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "test",
-    "tests"
+    "src",
+    "typings",
+    "*.js",
+    "*.json"
   ],
   "dependencies": {
     "angular": "^1.5.7",
