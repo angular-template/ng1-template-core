@@ -1,0 +1,23 @@
+{
+  "name": "ng1-template-core",
+  "description": "Core package for the Angular 1.5 template",
+  "main": "dist/core.js",
+  "authors": [
+    "Angular Template"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/angular-template/ng1-template-core",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.7",
+    "angular-ui-router": "^0.3.1",
+    "lodash": "^4.13.1",
+    "jquery": "^3.1.0"
+  }
+}

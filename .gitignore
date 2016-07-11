@@ -1,0 +1,11 @@
+# IDE setting files
+.idea/
+.settings/
+.vs/
+.vscode/
+
+# NPM, Bower & Typings
+bower_components/
+node_modules/
+typings/
+!typings/package.d.ts

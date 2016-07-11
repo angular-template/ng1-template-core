@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    },
+    "files": [
+        "typings/index.d.ts"
+    ],
+    "include": [
+        "typings/package.d.ts"
+    ]
+}
