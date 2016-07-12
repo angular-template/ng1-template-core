@@ -10,7 +10,6 @@ declare function Component(details: {
     selector: string;
     templateUrl?: string;
     templateUrlRoot?: string;
-    route?: ng1Template.core.IComponentRoute;
 }, module: ng.IModule): (target: Function) => void;
 declare function Layout(details: {
     name: string;
