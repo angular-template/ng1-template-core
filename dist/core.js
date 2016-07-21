@@ -61,6 +61,7 @@ var ng1Template;
     (function (core) {
         function registerComponent(reg, module) {
             var templateUrlRoot = reg.templateUrlRoot || "/client/modules/" + module.name + "/";
+            var templateUrl = reg.templateUrl || reg.name + "/" + reg.name + ".html";
             var bindings = reg.controller['bindings'] ? {} : undefined;
             if (bindings) {
                 for (var b in reg.controller['bindings']) {
@@ -70,7 +71,7 @@ var ng1Template;
                 }
             }
             module.component(_.camelCase(reg.name), {
-                templateUrl: "" + templateUrlRoot + reg.templateUrl,
+                templateUrl: "" + templateUrlRoot + templateUrl,
                 controller: reg.controller,
                 controllerAs: _.camelCase(reg.name),
                 bindings: bindings

@@ -23,6 +23,7 @@ namespace ng1Template.core {
         module: ng.IModule
     ) {
         let templateUrlRoot: string = reg.templateUrlRoot || `/client/modules/${module.name}/`;
+        let templateUrl: string = reg.templateUrl || `${reg.name}/${reg.name}.html`
 
         let bindings: { [binding: string]: string } = reg.controller['bindings'] ? {} : undefined;
         if (bindings) {
@@ -34,7 +35,7 @@ namespace ng1Template.core {
         }
 
         module.component(_.camelCase(reg.name), {
-            templateUrl: `${templateUrlRoot}${reg.templateUrl}`,
+            templateUrl: `${templateUrlRoot}${templateUrl}`,
             controller: reg.controller,
             controllerAs: _.camelCase(reg.name),
             bindings: bindings
