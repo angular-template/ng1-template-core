@@ -108,6 +108,11 @@ var ng1Template;
             }, module);
         }
         core.registerLayout = registerLayout;
+        function registerService(reg) {
+            var name = reg.name || reg.service['name'];
+            reg.module.service(_.camelCase(name), reg.service);
+        }
+        core.registerService = registerService;
     })(core = ng1Template.core || (ng1Template.core = {}));
 })(ng1Template || (ng1Template = {}));
 var ng1Template;

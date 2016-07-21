@@ -6,6 +6,10 @@ declare namespace bind {
     function string(): (target: Object, key: string) => void;
     function event(): (target: Object, key: string) => void;
 }
+declare namespace ng1Template.core {
+    type ClassDecorator = (target: Function) => void;
+    type ClassDecoratorFactory = () => ClassDecorator;
+}
 declare function Component(details: {
     selector: string;
     templateUrl: string;
@@ -43,8 +47,12 @@ declare namespace ng1Template.core {
         templateUrlRoot?: string;
     }
     function registerLayout(reg: ILayoutRegistration, module: ng.IModule): void;
-}
-declare namespace ng1Template.core {
+    interface IServiceRegistration {
+        name?: string;
+        service: Function;
+        module: ng.IModule;
+    }
+    function registerService(reg: IServiceRegistration): void;
 }
 declare namespace ng1Template.core {
     const coreModule: ng.IModule;
