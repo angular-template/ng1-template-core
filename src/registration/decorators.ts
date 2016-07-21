@@ -3,9 +3,9 @@
 
 function Component(details: {
     selector: string,
-    templateUrl?: string,
+    templateUrl: string,
     templateUrlRoot?: string
-}, module: ng.IModule) {
+}, module: ng.IModule, route?: ng1Template.core.IComponentRoute) {
     return function(target: Function) {
         let bindings: { [binding: string]: string } = target['bindings'] ? {} : undefined;
         if (bindings) {
@@ -21,7 +21,7 @@ function Component(details: {
             templateUrl: details.templateUrl || `${details.selector}/${details.selector}.html`,
             templateUrlRoot: details.templateUrlRoot,
             bindings: bindings,
-            route: target['route']
+            route: route
         }, module);
     }
 }
