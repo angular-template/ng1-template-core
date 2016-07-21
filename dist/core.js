@@ -25,7 +25,7 @@ var bind;
     }
     bind.event = event;
 })(bind || (bind = {}));
-function Component(details, module) {
+function Component(details, module, route) {
     return function (target) {
         var bindings = target['bindings'] ? {} : undefined;
         if (bindings) {
@@ -41,7 +41,7 @@ function Component(details, module) {
             templateUrl: details.templateUrl || details.selector + "/" + details.selector + ".html",
             templateUrlRoot: details.templateUrlRoot,
             bindings: bindings,
-            route: target['route']
+            route: route
         }, module);
     };
 }

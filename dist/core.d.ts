@@ -8,9 +8,9 @@ declare namespace bind {
 }
 declare function Component(details: {
     selector: string;
-    templateUrl?: string;
+    templateUrl: string;
     templateUrlRoot?: string;
-}, module: ng.IModule): (target: Function) => void;
+}, module: ng.IModule, route?: ng1Template.core.IComponentRoute): (target: Function) => void;
 declare function Layout(details: {
     name: string;
     templateUrl: string;
@@ -43,6 +43,8 @@ declare namespace ng1Template.core {
         templateUrlRoot?: string;
     }
     function registerLayout(reg: ILayoutRegistration, module: ng.IModule): void;
+}
+declare namespace ng1Template.core {
 }
 declare namespace ng1Template.core {
     const coreModule: ng.IModule;
