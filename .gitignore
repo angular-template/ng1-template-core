@@ -8,5 +8,5 @@
 bower_components/
 node_modules/
 typings/
-!typings/package.d.ts
+!typings/package.d.ts.template
 

@@ -12,12 +12,12 @@ declare namespace ng1Template.core {
 }
 declare function Component(details: {
     selector: string;
-    templateUrl: string;
+    templateUrl?: string;
     templateUrlRoot?: string;
 }, module: ng.IModule, route?: ng1Template.core.IComponentRoute): (target: Function) => void;
 declare function Layout(details: {
     name: string;
-    templateUrl: string;
+    templateUrl?: string;
     templateUrlRoot?: string;
 }, module: ng.IModule): (target: Function) => void;
 declare namespace ng1Template.core {

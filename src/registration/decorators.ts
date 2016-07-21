@@ -3,7 +3,7 @@
 
 function Component(details: {
     selector: string,
-    templateUrl: string,
+    templateUrl?: string,
     templateUrlRoot?: string
 }, module: ng.IModule, route?: ng1Template.core.IComponentRoute) {
     return function(target: Function) {
@@ -28,7 +28,7 @@ function Component(details: {
 
 function Layout(details: {
     name: string,
-    templateUrl: string,
+    templateUrl?: string,
     templateUrlRoot?: string
 }, module: ng.IModule) {
     return function(target: Function) {
