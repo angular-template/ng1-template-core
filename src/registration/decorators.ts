@@ -4,9 +4,8 @@
 function Component(details: {
     selector: string,
     templateUrl: string,
-    templateUrlRoot?: string,
-    route?: ng1Template.core.IComponentRoute
-}, module: ng.IModule) {
+    templateUrlRoot?: string
+}, module: ng.IModule, route?: ng1Template.core.IComponentRoute) {
     return function(target: Function) {
         let bindings: { [binding: string]: string } = target['bindings'] ? {} : undefined;
         if (bindings) {
@@ -22,7 +21,7 @@ function Component(details: {
             templateUrl: details.templateUrl,
             templateUrlRoot: details.templateUrlRoot,
             bindings: bindings,
-            route: details.route
+            route: route
         }, module);
     }
 }
