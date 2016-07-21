@@ -93,13 +93,12 @@ namespace ng1Template.core {
     }
 
     export interface IServiceRegistration {
-        name?: string;
+        name: string;
         service: Function;
         module: ng.IModule;
     }
 
     export function registerService(reg: IServiceRegistration) {
-        let name: string = reg.name || reg.service['name'];
-        reg.module.service(_.camelCase(name), reg.service);
+        reg.module.service(_.camelCase(reg.name), reg.service);
     }
 }

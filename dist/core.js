@@ -88,8 +88,7 @@ var ng1Template;
         }
         core.registerLayout = registerLayout;
         function registerService(reg) {
-            var name = reg.name || reg.service['name'];
-            reg.module.service(_.camelCase(name), reg.service);
+            reg.module.service(_.camelCase(reg.name), reg.service);
         }
         core.registerService = registerService;
     })(core = ng1Template.core || (ng1Template.core = {}));

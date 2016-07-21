@@ -50,7 +50,7 @@ declare namespace ng1Template.core {
     }
     function registerLayout(reg: ILayoutRegistration, module: ng.IModule): void;
     interface IServiceRegistration {
-        name?: string;
+        name: string;
         service: Function;
         module: ng.IModule;
     }
