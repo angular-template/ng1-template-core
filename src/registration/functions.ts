@@ -22,18 +22,29 @@ namespace ng1Template.core {
         reg: IComponentRegistration,
         module: ng.IModule
     ) {
-        let finalTemplateUrlRoot: string = reg.templateUrlRoot || `/client/modules/${module.name}/`;
+        let templateUrlRoot: string = reg.templateUrlRoot || `/client/modules/${module.name}/`;
+
+        let bindings: { [binding: string]: string } = reg.controller['bindings'] ? {} : undefined;
+        if (bindings) {
+            for (let b in reg.controller['bindings']) {
+                if (reg.controller['bindings'].hasOwnProperty(b)) {
+                    bindings[b] = reg.controller['bindings'][b];
+                }
+            }
+        }
+
         module.component(_.camelCase(reg.name), {
-            templateUrl: `${finalTemplateUrlRoot}${reg.templateUrl}`,
+            templateUrl: `${templateUrlRoot}${reg.templateUrl}`,
             controller: reg.controller,
             controllerAs: _.camelCase(reg.name),
-            bindings: reg.bindings
+            bindings: bindings
         });
 
         if (reg.route) {
             let route: IComponentRoute = reg.route;
             module.config(['$stateProvider',
                 function ($stateProvider: ng.ui.IStateProvider) {
+                    //TODO: Use component field instead of template. Consult Sunny and see if component is available in current version of ui-router.
                     let state: ng.ui.IState = {
                         name: reg.name,
                         template: `<${reg.name}></${reg.name}>`,

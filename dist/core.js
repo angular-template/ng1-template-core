@@ -60,12 +60,20 @@ var ng1Template;
     var core;
     (function (core) {
         function registerComponent(reg, module) {
-            var finalTemplateUrlRoot = reg.templateUrlRoot || "/client/modules/" + module.name + "/";
+            var templateUrlRoot = reg.templateUrlRoot || "/client/modules/" + module.name + "/";
+            var bindings = reg.controller['bindings'] ? {} : undefined;
+            if (bindings) {
+                for (var b in reg.controller['bindings']) {
+                    if (reg.controller['bindings'].hasOwnProperty(b)) {
+                        bindings[b] = reg.controller['bindings'][b];
+                    }
+                }
+            }
             module.component(_.camelCase(reg.name), {
-                templateUrl: "" + finalTemplateUrlRoot + reg.templateUrl,
+                templateUrl: "" + templateUrlRoot + reg.templateUrl,
                 controller: reg.controller,
                 controllerAs: _.camelCase(reg.name),
-                bindings: reg.bindings
+                bindings: bindings
             });
             if (reg.route) {
                 var route_1 = reg.route;
