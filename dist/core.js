@@ -25,36 +25,6 @@ var bind;
     }
     bind.event = event;
 })(bind || (bind = {}));
-function Component(details, module, route) {
-    return function (target) {
-        var bindings = target['bindings'] ? {} : undefined;
-        if (bindings) {
-            for (var b in target['bindings']) {
-                if (target['bindings'].hasOwnProperty(b)) {
-                    bindings[b] = target['bindings'][b];
-                }
-            }
-        }
-        ng1Template.core.registerComponent({
-            name: details.selector,
-            controller: target,
-            templateUrl: details.templateUrl || details.selector + "/" + details.selector + ".html",
-            templateUrlRoot: details.templateUrlRoot,
-            bindings: bindings,
-            route: route
-        }, module);
-    };
-}
-function Layout(details, module) {
-    return function (target) {
-        ng1Template.core.registerLayout({
-            name: details.name,
-            controller: target,
-            templateUrl: details.templateUrl || "layouts/" + details.name + "/" + details.name + ".html",
-            templateUrlRoot: details.templateUrlRoot
-        }, module);
-    };
-}
 var ng1Template;
 (function (ng1Template) {
     var core;

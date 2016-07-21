@@ -8,18 +8,20 @@ declare namespace bind {
 }
 declare namespace ng1Template.core {
     type ClassDecorator = (target: Function) => void;
-    type ClassDecoratorFactory = () => ClassDecorator;
+    interface IComponentDetails {
+        selector: string;
+        templateUrl?: string;
+        templateUrlRoot?: string;
+    }
+    type ComponentDecoratorFactory = (details: IComponentDetails, route?: IComponentRoute) => ClassDecorator;
+    interface ILayoutDetails {
+        name: string;
+        templateUrl?: string;
+        templateUrlRoot?: string;
+    }
+    type LayoutDecoratorFactory = (details: ILayoutDetails) => ClassDecorator;
+    type InjectorDecoratorFactory = () => ClassDecorator;
 }
-declare function Component(details: {
-    selector: string;
-    templateUrl?: string;
-    templateUrlRoot?: string;
-}, module: ng.IModule, route?: ng1Template.core.IComponentRoute): (target: Function) => void;
-declare function Layout(details: {
-    name: string;
-    templateUrl?: string;
-    templateUrlRoot?: string;
-}, module: ng.IModule): (target: Function) => void;
 declare namespace ng1Template.core {
     interface IComponentRegistration {
         name: string;

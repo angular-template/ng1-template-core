@@ -3,5 +3,22 @@
 
 namespace ng1Template.core {
     export type ClassDecorator = (target: Function) => void;
-    export type ClassDecoratorFactory = () => ClassDecorator;
+
+    export interface IComponentDetails {
+        selector: string;
+        templateUrl?: string;
+        templateUrlRoot?: string;
+    }
+
+    export type ComponentDecoratorFactory = (details: IComponentDetails, route?: IComponentRoute) => ClassDecorator;
+
+    export interface ILayoutDetails {
+        name: string;
+        templateUrl?: string;
+        templateUrlRoot?: string;
+    }
+
+    export type LayoutDecoratorFactory = (details: ILayoutDetails) => ClassDecorator;
+
+    export type InjectorDecoratorFactory = () => ClassDecorator;
 }
