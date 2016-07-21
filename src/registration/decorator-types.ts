@@ -2,8 +2,15 @@
 /// <reference path="../../typings/package.d.ts"/>
 
 namespace ng1Template.core {
+    /**
+     * Represents a decorator function for a class.
+     * @param target The constructor function of the class.
+     */
     export type ClassDecorator = (target: Function) => void;
 
+    /**
+     * Details required by the component decorator to register a component.
+     */
     export interface IComponentDetails {
         selector: string;
         templateUrl?: string;
