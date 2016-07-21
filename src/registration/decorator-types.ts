@@ -20,5 +20,5 @@ namespace ng1Template.core {
 
     export type LayoutDecoratorFactory = (details: ILayoutDetails) => ClassDecorator;
 
-    export type InjectorDecoratorFactory = () => ClassDecorator;
+    export type ServiceDecoratorFactory = (name: string) => ClassDecorator;
 }

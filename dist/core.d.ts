@@ -20,7 +20,7 @@ declare namespace ng1Template.core {
         templateUrlRoot?: string;
     }
     type LayoutDecoratorFactory = (details: ILayoutDetails) => ClassDecorator;
-    type InjectorDecoratorFactory = () => ClassDecorator;
+    type ServiceDecoratorFactory = (name: string) => ClassDecorator;
 }
 declare namespace ng1Template.core {
     interface IComponentRegistration {
