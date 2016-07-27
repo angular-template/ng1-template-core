@@ -1,5 +1,20 @@
 
 
+declare namespace ng1Template.core {
+    const coreModule: ng.IModule;
+}
+declare namespace ng1Template.core {
+    class StorageService {
+        private $window;
+        constructor($window: ng.IWindowService);
+        getLocal(key: string): any;
+        getSession(key: string): any;
+        removeLocal(key: string): void;
+        removeSession(key: string): void;
+        setLocal(key: string, value: any): void;
+        setSession(key: string, value: any): void;
+    }
+}
 declare namespace bind {
     function oneWay(): (target: Object, key: string) => void;
     function twoWay(): (target: Object, key: string) => void;
@@ -57,5 +72,22 @@ declare namespace ng1Template.core {
     function registerService(reg: IServiceRegistration): void;
 }
 declare namespace ng1Template.core {
-    const coreModule: ng.IModule;
+    abstract class BaseState {
+        private _storage;
+        constructor(storage: IStorageDescriptor[]);
+        protected initialize(): void;
+        clear(initialize?: boolean): void;
+        reset(): void;
+        protected setState<T>(name: string, value: T): void;
+        protected getState<T>(name: string): T;
+    }
+    interface IStorageDescriptor {
+        name: string;
+        type: StateType;
+    }
+    enum StateType {
+        inMemory = 0,
+        session = 1,
+        persisted = 2,
+    }
 }

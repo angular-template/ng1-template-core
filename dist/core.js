@@ -1,3 +1,45 @@
+var ng1Template;
+(function (ng1Template) {
+    var core;
+    (function (core) {
+        core.coreModule = angular.module('ng1Template.core', []);
+    })(core = ng1Template.core || (ng1Template.core = {}));
+})(ng1Template || (ng1Template = {}));
+var ng1Template;
+(function (ng1Template) {
+    var core;
+    (function (core) {
+        var StorageService = (function () {
+            function StorageService($window) {
+                this.$window = $window;
+                if (typeof Storage === 'undefined') {
+                    throw Error("This browser does not support local or session storage.");
+                }
+            }
+            StorageService.prototype.getLocal = function (key) {
+                return angular.fromJson(this.$window.localStorage.getItem(key));
+            };
+            StorageService.prototype.getSession = function (key) {
+                return angular.fromJson(this.$window.sessionStorage.getItem(key));
+            };
+            StorageService.prototype.removeLocal = function (key) {
+                this.$window.localStorage.removeItem(key);
+            };
+            StorageService.prototype.removeSession = function (key) {
+                this.$window.sessionStorage.removeItem(key);
+            };
+            StorageService.prototype.setLocal = function (key, value) {
+                this.$window.localStorage.setItem(key, angular.toJson(value));
+            };
+            StorageService.prototype.setSession = function (key, value) {
+                this.$window.sessionStorage.setItem(key, angular.toJson(value));
+            };
+            return StorageService;
+        }());
+        core.StorageService = StorageService;
+        core.coreModule.service('storageService', StorageService);
+    })(core = ng1Template.core || (ng1Template.core = {}));
+})(ng1Template || (ng1Template = {}));
 var bind;
 (function (bind) {
     function getDecoratorFunction(binding) {
@@ -97,6 +139,91 @@ var ng1Template;
 (function (ng1Template) {
     var core;
     (function (core) {
-        core.coreModule = angular.module('ng1Template.core', []);
+        var BaseState = (function () {
+            function BaseState(storage) {
+                var _this = this;
+                this._storage = {};
+                if (typeof Storage === 'undefined') {
+                    throw Error("This browser does not support local storage.");
+                }
+                (storage || []).forEach(function (descriptor) {
+                    _this._storage[descriptor.name] = { type: descriptor.type };
+                });
+                this.initialize();
+            }
+            BaseState.prototype.initialize = function () {
+            };
+            BaseState.prototype.clear = function (initialize) {
+                if (initialize === void 0) { initialize = false; }
+                for (var item in this._storage) {
+                    if (this._storage.hasOwnProperty(item)) {
+                        this.setState(item, null);
+                    }
+                }
+                if (initialize) {
+                    this.initialize();
+                }
+            };
+            BaseState.prototype.reset = function () {
+                this.clear(true);
+            };
+            BaseState.prototype.setState = function (name, value) {
+                var item = this._storage[name];
+                if (!item) {
+                    throw new Error("Cannot find storage item named " + name + ". Each item in state must be explicitly declared.");
+                }
+                switch (item.type) {
+                    case StateType.inMemory:
+                        item.value = value;
+                        break;
+                    case StateType.session:
+                        if (Boolean(value)) {
+                            window.sessionStorage.setItem(name, JSON.stringify(value));
+                        }
+                        else {
+                            window.sessionStorage.removeItem(name);
+                        }
+                        break;
+                    case StateType.persisted:
+                        if (Boolean(value)) {
+                            window.localStorage.setItem(name, JSON.stringify(value));
+                        }
+                        else {
+                            window.localStorage.removeItem(name);
+                        }
+                        break;
+                    default:
+                        console.error("Don't know how to handle storage type " + item.type + ".");
+                        break;
+                }
+            };
+            BaseState.prototype.getState = function (name) {
+                var storage = this._storage[name];
+                if (!storage) {
+                    throw new Error("Cannot find storage item named " + name + ". Each item in state must be explicitly declared.");
+                }
+                switch (storage.type) {
+                    case StateType.inMemory:
+                        return storage.value;
+                    case StateType.session:
+                        var sessionValue = window.sessionStorage.getItem(name);
+                        return JSON.parse(sessionValue);
+                    case StateType.persisted:
+                        var persistedValue = window.localStorage.getItem(name);
+                        return JSON.parse(persistedValue);
+                    default:
+                        console.error("Don't know how to handle storage type " + storage.type + ".");
+                        return storage.value;
+                }
+            };
+            return BaseState;
+        }());
+        core.BaseState = BaseState;
+        (function (StateType) {
+            StateType[StateType["inMemory"] = 0] = "inMemory";
+            StateType[StateType["session"] = 1] = "session";
+            StateType[StateType["persisted"] = 2] = "persisted";
+        })(core.StateType || (core.StateType = {}));
+        var StateType = core.StateType;
     })(core = ng1Template.core || (ng1Template.core = {}));
 })(ng1Template || (ng1Template = {}));
