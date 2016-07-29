@@ -1,26 +1,6 @@
 
 
 declare namespace ng1Template.core {
-    abstract class BaseState {
-        private _storage;
-        constructor(storage: IStorageDescriptor[]);
-        protected initialize(): void;
-        clear(initialize?: boolean): void;
-        reset(): void;
-        protected setState<T>(name: string, value: T): void;
-        protected getState<T>(name: string): T;
-    }
-    interface IStorageDescriptor {
-        name: string;
-        type: StateType;
-    }
-    enum StateType {
-        inMemory = 0,
-        session = 1,
-        persisted = 2,
-    }
-}
-declare namespace ng1Template.core {
     const coreModule: ng.IModule;
 }
 declare namespace ng1Template.core {
@@ -90,4 +70,24 @@ declare namespace ng1Template.core {
         module: ng.IModule;
     }
     function registerService(reg: IServiceRegistration): void;
+}
+declare namespace ng1Template.core {
+    abstract class BaseState {
+        private _storage;
+        constructor(storage: IStorageDescriptor[]);
+        protected initialize(): void;
+        clear(initialize?: boolean): void;
+        reset(): void;
+        protected setState<T>(name: string, value: T): void;
+        protected getState<T>(name: string): T;
+    }
+    interface IStorageDescriptor {
+        name: string;
+        type: StateType;
+    }
+    enum StateType {
+        inMemory = 0,
+        session = 1,
+        persisted = 2,
+    }
 }
