@@ -1,9 +1,6 @@
 
 
 declare namespace ng1Template.core {
-    const coreModule: ng.IModule;
-}
-declare namespace ng1Template.core {
     class StorageService {
         private $window;
         constructor($window: ng.IWindowService);
@@ -78,6 +75,12 @@ declare namespace ng1Template.core {
         module: ng.IModule;
     }
     function registerService(reg: IServiceRegistration): void;
+    interface IStateRegistration {
+        name: string;
+        state: Function;
+        module: ng.IModule;
+    }
+    function registerState(reg: IStateRegistration): void;
 }
 declare namespace state {
     function inMemory(): (target: Object, key: string) => void;
@@ -85,22 +88,5 @@ declare namespace state {
     function persisted(): (target: Object, key: string) => void;
 }
 declare namespace ng1Template.core {
-    abstract class BaseState {
-        private _storage;
-        constructor(storage: IStorageDescriptor[]);
-        protected initialize(): void;
-        clear(initialize?: boolean): void;
-        reset(): void;
-        protected setState<T>(name: string, value: T): void;
-        protected getState<T>(name: string): T;
-    }
-    interface IStorageDescriptor {
-        name: string;
-        type: StateType;
-    }
-    enum StateType {
-        inMemory = 0,
-        session = 1,
-        persisted = 2,
-    }
+    const coreModule: ng.IModule;
 }

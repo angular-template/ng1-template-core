@@ -109,4 +109,14 @@ namespace ng1Template.core {
     export function registerService(reg: IServiceRegistration) {
         reg.module.service(_.camelCase(reg.name), reg.service);
     }
+
+    export interface IStateRegistration {
+        name: string;
+        state: Function;
+        module: ng.IModule;
+    }
+
+    export function registerState(reg: IStateRegistration) {
+        reg.module.service(_.camelCase(reg.name), reg.state);
+    }
 }
