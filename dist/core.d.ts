@@ -1,6 +1,9 @@
 
 
 declare namespace ng1Template.core {
+    const coreModule: ng.IModule;
+}
+declare namespace ng1Template.core {
     class StorageService {
         private $window;
         constructor($window: ng.IWindowService);
@@ -86,7 +89,4 @@ declare namespace state {
     function inMemory(): (target: Object, key: string) => void;
     function session(): (target: Object, key: string) => void;
     function persisted(): (target: Object, key: string) => void;
-}
-declare namespace ng1Template.core {
-    const coreModule: ng.IModule;
 }

@@ -13,9 +13,24 @@ gulp.task('build', function(done) {
 });
 
 gulp.task('compile', function() {
-    var tsProject = $.typescript.createProject('tsconfig.json');
-    var tsResult = tsProject.src()
-        .pipe($.typescript(tsProject));
+    // var tsProject = $.typescript.createProject('tsconfig.json');
+
+    let tsFiles = [].concat(
+        `./typings/index.d.ts`,
+        `./typings/package.d.ts`,
+        `./src/module.ts`,
+        `./src/**/*.ts`
+    );
+    let tsOptions = {
+        target: "ES5",
+        experimentalDecorators: true,
+        emitDecoratorMetadata: true,
+        outFile: "core.js",
+        declaration: true,
+        removeComments: true
+    };
+    var tsResult = gulp.src(tsFiles)
+        .pipe($.typescript(tsOptions));
     return merge([
         tsResult.js
             .pipe(gulp.dest('./dist/')),

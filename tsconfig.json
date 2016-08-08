@@ -10,7 +10,9 @@
     "include": [
         "typings/index.d.ts",
         "typings/package.d.ts",
-        "src/**/*.ts"
+        "src/module.ts",
+        "src/storage.service.ts",
+        "src/registration/**/*.ts"
     ],
     "exclude": [
         "bower_components",
