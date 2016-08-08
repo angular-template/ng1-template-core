@@ -156,8 +156,14 @@ var state;
                 getter: function () { return target[("_" + key)]; },
                 setter: function (value) { return target[("_" + key)] = value; }
             };
-            case 2: return undefined;
-            case 3: return undefined;
+            case 2: return {
+                getter: function () { return JSON.parse(window.sessionStorage.getItem(key)); },
+                setter: function (value) { return window.sessionStorage.setItem(key, JSON.stringify(value)); }
+            };
+            case 3: return {
+                getter: function () { return JSON.parse(window.localStorage.getItem(key)); },
+                setter: function (value) { return window.localStorage.setItem(key, JSON.stringify(value)); }
+            };
             default: throw new Error("Internal error. Unknown type " + type);
         }
     }

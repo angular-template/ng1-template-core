@@ -21,8 +21,14 @@ namespace state {
                 getter: () => target[`_${key}`],
                 setter: (value: any) => target[`_${key}`] = value
             };
-            case 2: return undefined;
-            case 3: return undefined;
+            case 2: return {
+                getter: () => JSON.parse(window.sessionStorage.getItem(key)),
+                setter: (value: any) => window.sessionStorage.setItem(key, JSON.stringify(value))
+            };
+            case 3: return {
+                getter: () => JSON.parse(window.localStorage.getItem(key)),
+                setter: (value: any) => window.localStorage.setItem(key, JSON.stringify(value))
+            };
             default: throw new Error(`Internal error. Unknown type ${type}`);
         }
     }
