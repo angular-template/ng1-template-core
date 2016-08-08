@@ -14,9 +14,15 @@ namespace ng1Template.core {
     export interface IComponentRoute {
         path: string;
         resolve?: { [key: string]: any };
-        params?: any;
+        params?: { [name: string]: string | IRouteParamsValue };
         abstract?: boolean;
         parent?: string | IComponentRegistration;
+    }
+
+    export interface IRouteParamsValue {
+        value?: any;
+        array?: boolean;
+        squash?: boolean | string;
     }
 
     export function registerComponent(

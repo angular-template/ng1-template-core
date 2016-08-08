@@ -53,9 +53,16 @@ declare namespace ng1Template.core {
         resolve?: {
             [key: string]: any;
         };
-        params?: any;
+        params?: {
+            [name: string]: string | IRouteParamsValue;
+        };
         abstract?: boolean;
         parent?: string | IComponentRegistration;
+    }
+    interface IRouteParamsValue {
+        value?: any;
+        array?: boolean;
+        squash?: boolean | string;
     }
     function registerComponent(reg: IComponentRegistration, module: ng.IModule): void;
     interface ILayoutRegistration {
