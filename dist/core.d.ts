@@ -79,6 +79,11 @@ declare namespace ng1Template.core {
     }
     function registerService(reg: IServiceRegistration): void;
 }
+declare namespace state {
+    function inMemory(): (target: Object, key: string) => void;
+    function session(): (target: Object, key: string) => void;
+    function persisted(): (target: Object, key: string) => void;
+}
 declare namespace ng1Template.core {
     abstract class BaseState {
         private _storage;

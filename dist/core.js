@@ -136,6 +136,44 @@ var ng1Template;
         core.registerService = registerService;
     })(core = ng1Template.core || (ng1Template.core = {}));
 })(ng1Template || (ng1Template = {}));
+var state;
+(function (state) {
+    function getDecoratorFunction(type) {
+        return function (target, key) {
+            delete target[key];
+            var getterSetter = getGetterSetter(type, target, key);
+            Object.defineProperty(target, key, {
+                enumerable: true,
+                configurable: true,
+                get: getterSetter.getter,
+                set: getterSetter.setter
+            });
+        };
+    }
+    function getGetterSetter(type, target, key) {
+        switch (type) {
+            case 1: return {
+                getter: function () { return target[("_" + key)]; },
+                setter: function (value) { return target[("_" + key)] = value; }
+            };
+            case 2: return undefined;
+            case 3: return undefined;
+            default: throw new Error("Internal error. Unknown type " + type);
+        }
+    }
+    function inMemory() {
+        return getDecoratorFunction(1);
+    }
+    state.inMemory = inMemory;
+    function session() {
+        return getDecoratorFunction(2);
+    }
+    state.session = session;
+    function persisted() {
+        return getDecoratorFunction(3);
+    }
+    state.persisted = persisted;
+})(state || (state = {}));
 var ng1Template;
 (function (ng1Template) {
     var core;
