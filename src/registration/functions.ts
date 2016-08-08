@@ -14,6 +14,7 @@ namespace ng1Template.core {
     export interface IComponentRoute {
         path: string;
         resolve?: { [key: string]: any };
+        params?: any;
         abstract?: boolean;
         parent?: string | IComponentRegistration;
     }
@@ -51,6 +52,7 @@ namespace ng1Template.core {
                         template: `<${reg.name}></${reg.name}>`,
                         url: route.path,
                         resolve: route.resolve,
+                        params: route.params
                     };
                     if (route.abstract !== undefined) {
                         state.abstract = route.abstract;

@@ -53,6 +53,7 @@ declare namespace ng1Template.core {
         resolve?: {
             [key: string]: any;
         };
+        params?: any;
         abstract?: boolean;
         parent?: string | IComponentRegistration;
     }

@@ -97,6 +97,7 @@ var ng1Template;
                             template: "<" + reg.name + "></" + reg.name + ">",
                             url: route_1.path,
                             resolve: route_1.resolve,
+                            params: route_1.params
                         };
                         if (route_1.abstract !== undefined) {
                             state.abstract = route_1.abstract;
