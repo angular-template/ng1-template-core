@@ -4,8 +4,7 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "outFile": "core.js",
-        "declaration": true,
-        "removeComments": true
+        "declaration": true
     },
     "include": [
         "typings/index.d.ts",

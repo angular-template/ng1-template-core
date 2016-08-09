@@ -13,8 +13,6 @@ gulp.task('build', function(done) {
 });
 
 gulp.task('compile', function() {
-    // var tsProject = $.typescript.createProject('tsconfig.json');
-
     let tsFiles = [].concat(
         `./typings/index.d.ts`,
         `./typings/package.d.ts`,
@@ -26,13 +24,14 @@ gulp.task('compile', function() {
         experimentalDecorators: true,
         emitDecoratorMetadata: true,
         outFile: "core.js",
-        declaration: true,
-        removeComments: true
+        declaration: true
     };
     var tsResult = gulp.src(tsFiles)
         .pipe($.typescript(tsOptions));
     return merge([
         tsResult.js
+            .pipe($.ngAnnotate())
+            .pipe($.stripLine(`/// <reference path="`))
             .pipe(gulp.dest('./dist/')),
         tsResult.dts
             .pipe($.stripLine(`/// <reference path="`))

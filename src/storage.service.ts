@@ -2,6 +2,9 @@
 /// <reference path="../typings/package.d.ts"/>
 
 namespace ng1Template.core {
+    /**
+     * Angular service that exposes the HTML5 local storage and session storage capabilities.
+     */
     export class StorageService {
         /* @ngInject */
         constructor(private $window: ng.IWindowService) {

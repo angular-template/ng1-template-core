@@ -4,6 +4,9 @@ declare namespace ng1Template.core {
     const coreModule: ng.IModule;
 }
 declare namespace ng1Template.core {
+    /**
+     * Angular service that exposes the HTML5 local storage and session storage capabilities.
+     */
     class StorageService {
         private $window;
         constructor($window: ng.IWindowService);
@@ -22,7 +25,14 @@ declare namespace bind {
     function event(): (target: Object, key: string) => void;
 }
 declare namespace ng1Template.core {
+    /**
+     * Represents a decorator function for a class.
+     * @param target The constructor function of the class.
+     */
     type ClassDecorator = (target: Function) => void;
+    /**
+     * Details required by the component decorator to register a component.
+     */
     interface IComponentDetails {
         selector: string;
         templateUrl?: string;

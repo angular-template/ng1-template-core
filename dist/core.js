@@ -1,3 +1,5 @@
+
+
 var ng1Template;
 (function (ng1Template) {
     var core;
@@ -5,11 +7,18 @@ var ng1Template;
         core.coreModule = angular.module('ng1Template.core', []);
     })(core = ng1Template.core || (ng1Template.core = {}));
 })(ng1Template || (ng1Template = {}));
+
+
 var ng1Template;
 (function (ng1Template) {
     var core;
     (function (core) {
+        /**
+         * Angular service that exposes the HTML5 local storage and session storage capabilities.
+         */
         var StorageService = (function () {
+            /* @ngInject */
+            StorageService.$inject = ["$window"];
             function StorageService($window) {
                 this.$window = $window;
                 if (typeof Storage === 'undefined') {
@@ -40,6 +49,8 @@ var ng1Template;
         core.coreModule.service('storageService', StorageService);
     })(core = ng1Template.core || (ng1Template.core = {}));
 })(ng1Template || (ng1Template = {}));
+
+
 var bind;
 (function (bind) {
     function getDecoratorFunction(binding) {
@@ -67,6 +78,10 @@ var bind;
     }
     bind.event = event;
 })(bind || (bind = {}));
+
+
+
+
 var ng1Template;
 (function (ng1Template) {
     var core;
@@ -92,6 +107,7 @@ var ng1Template;
                 var route_1 = reg.route;
                 module.config(['$stateProvider',
                     function ($stateProvider) {
+                        //TODO: Use component field instead of template. Consult Sunny and see if component is available in current version of ui-router.
                         var state = {
                             name: reg.name,
                             template: "<" + reg.name + "></" + reg.name + ">",
@@ -140,6 +156,8 @@ var ng1Template;
         core.registerState = registerState;
     })(core = ng1Template.core || (ng1Template.core = {}));
 })(ng1Template || (ng1Template = {}));
+
+
 var state;
 (function (state) {
     function getDecoratorFunction(type) {

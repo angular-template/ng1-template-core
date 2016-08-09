@@ -21,6 +21,7 @@
     "gulp": "^3.9.1",
     "gulp-inject": "^4.1.0",
     "gulp-load-plugins": "^1.2.4",
+    "gulp-ng-annotate": "^2.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-strip-line": "0.0.1",
     "gulp-symlink": "^2.1.4",
