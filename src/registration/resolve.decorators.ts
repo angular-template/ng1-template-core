@@ -7,3 +7,20 @@ function resolved(target: Object, key: string) {
     }
     target.constructor['bindings'][key] = '<';
 }
+
+function resolver(params?: string[]) {
+    return function(target: Object, key: string, descriptor: PropertyDescriptor) {
+        if (typeof target !== 'object') {
+            throw new Error(`Resolver method ${key} should be an instance method.`)
+        }
+        if (!_.startsWith(key, 'resolve')) {
+            throw new Error(`Resolver method ${key} is invalid as it does not start with 'resolve'.`);
+        }
+        if (!target.constructor['resolves']) {
+            target.constructor['resolves'] = {};
+        }
+        let resolveKey: string = _.camelCase(key.replace(/^resolve(\w+)$/, '$1'));
+        target.constructor['resolves'][resolveKey] = params && params.length > 0 ?
+            params.concat(target[key]) : target[key];
+    };
+}

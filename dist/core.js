@@ -115,8 +115,8 @@ var ng1Template;
                     }
                 }
                 var resolveAttrs = [];
-                if (route_1.resolve) {
-                    for (var resolveKey in route_1.resolve) {
+                if (resolves_1) {
+                    for (var resolveKey in resolves_1) {
                         if (route_1.resolve.hasOwnProperty(resolveKey)) {
                             resolveAttrs.push(_.kebabCase(resolveKey) + "=\"$resolve." + resolveKey + "\"");
                         }
@@ -183,6 +183,22 @@ function resolved(target, key) {
         target.constructor['bindings'] = {};
     }
     target.constructor['bindings'][key] = '<';
+}
+function resolver(params) {
+    return function (target, key, descriptor) {
+        if (typeof target !== 'object') {
+            throw new Error("Resolver method " + key + " should be an instance method.");
+        }
+        if (!_.startsWith(key, 'resolve')) {
+            throw new Error("Resolver method " + key + " is invalid as it does not start with 'resolve'.");
+        }
+        if (!target.constructor['resolves']) {
+            target.constructor['resolves'] = {};
+        }
+        var resolveKey = _.camelCase(key.replace(/^resolve(\w+)$/, '$1'));
+        target.constructor['resolves'][resolveKey] = params && params.length > 0 ?
+            params.concat(target[key]) : target[key];
+    };
 }
 
 
