@@ -50,12 +50,23 @@ namespace ng1Template.core {
 
         if (reg.route) {
             let route: IComponentRoute = reg.route;
+            let resolveAttrs: string[] = [];
+            if (route.resolve) {
+                for (let resolveKey in route.resolve) {
+                    if (route.resolve.hasOwnProperty(resolveKey)) {
+                        resolveAttrs.push(`${_.kebabCase(resolveKey)}="$resolve.${resolveKey}"`);
+                    }
+                }
+            }
+            let template: string = resolveAttrs.length === 0 ?
+                `<${reg.name}></${reg.name}>` :
+                `<${reg.name} ${resolveAttrs.join(' ')}></${reg.name}>`;
             module.config(['$stateProvider',
                 function ($stateProvider: ng.ui.IStateProvider) {
                     //TODO: Use component field instead of template. Consult Sunny and see if component is available in current version of ui-router.
                     let state: ng.ui.IState = {
                         name: reg.name,
-                        template: `<${reg.name}></${reg.name}>`,
+                        template: template,
                         url: route.path,
                         resolve: route.resolve,
                         params: route.params
