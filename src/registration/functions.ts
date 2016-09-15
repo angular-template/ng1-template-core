@@ -64,7 +64,7 @@ namespace ng1Template.core {
             let resolveAttrs: string[] = [];
             if (resolves) {
                 for (let resolveKey in resolves) {
-                    if (route.resolve.hasOwnProperty(resolveKey)) {
+                    if (resolves.hasOwnProperty(resolveKey)) {
                         resolveAttrs.push(`${_.kebabCase(resolveKey)}="$resolve.${resolveKey}"`);
                     }
                 }

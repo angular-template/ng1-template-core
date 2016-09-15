@@ -117,7 +117,7 @@ var ng1Template;
                 var resolveAttrs = [];
                 if (resolves_1) {
                     for (var resolveKey in resolves_1) {
-                        if (route_1.resolve.hasOwnProperty(resolveKey)) {
+                        if (resolves_1.hasOwnProperty(resolveKey)) {
                             resolveAttrs.push(_.kebabCase(resolveKey) + "=\"$resolve." + resolveKey + "\"");
                         }
                     }
