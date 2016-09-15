@@ -105,12 +105,23 @@ var ng1Template;
             });
             if (reg.route) {
                 var route_1 = reg.route;
+                var resolveAttrs = [];
+                if (route_1.resolve) {
+                    for (var resolveKey in route_1.resolve) {
+                        if (route_1.resolve.hasOwnProperty(resolveKey)) {
+                            resolveAttrs.push(_.kebabCase(resolveKey) + "=\"$resolve." + resolveKey + "\"");
+                        }
+                    }
+                }
+                var template_1 = resolveAttrs.length === 0 ?
+                    "<" + reg.name + "></" + reg.name + ">" :
+                    "<" + reg.name + " " + resolveAttrs.join(' ') + "></" + reg.name + ">";
                 module.config(['$stateProvider',
                     function ($stateProvider) {
                         //TODO: Use component field instead of template. Consult Sunny and see if component is available in current version of ui-router.
                         var state = {
                             name: reg.name,
-                            template: "<" + reg.name + "></" + reg.name + ">",
+                            template: template_1,
                             url: route_1.path,
                             resolve: route_1.resolve,
                             params: route_1.params
