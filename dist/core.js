@@ -169,13 +169,11 @@ var ng1Template;
 })(ng1Template || (ng1Template = {}));
 
 
-function resolved() {
-    return function (target, key) {
-        if (!target.constructor['bindings']) {
-            target.constructor['bindings'] = {};
-        }
-        target.constructor['bindings'][key] = '<';
-    };
+function resolved(target, key) {
+    if (!target.constructor['bindings']) {
+        target.constructor['bindings'] = {};
+    }
+    target.constructor['bindings'][key] = '<';
 }
 
 
