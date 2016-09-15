@@ -169,6 +169,16 @@ var ng1Template;
 })(ng1Template || (ng1Template = {}));
 
 
+function resolved() {
+    return function (target, key) {
+        if (!target.constructor['bindings']) {
+            target.constructor['bindings'] = {};
+        }
+        target.constructor['bindings'][key] = '<';
+    };
+}
+
+
 var state;
 (function (state) {
     function getDecoratorFunction(type) {

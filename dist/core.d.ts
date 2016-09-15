@@ -95,6 +95,7 @@ declare namespace ng1Template.core {
     }
     function registerState(reg: IStateRegistration): void;
 }
+declare function resolved(): (target: Object, key: string) => void;
 declare namespace state {
     function inMemory(): (target: Object, key: string) => void;
     function session(): (target: Object, key: string) => void;
