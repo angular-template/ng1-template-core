@@ -9,48 +9,6 @@ var ng1Template;
 })(ng1Template || (ng1Template = {}));
 
 
-var ng1Template;
-(function (ng1Template) {
-    var core;
-    (function (core) {
-        /**
-         * Angular service that exposes the HTML5 local storage and session storage capabilities.
-         */
-        var StorageService = (function () {
-            /* @ngInject */
-            StorageService.$inject = ["$window"];
-            function StorageService($window) {
-                this.$window = $window;
-                if (typeof Storage === 'undefined') {
-                    throw Error("This browser does not support local or session storage.");
-                }
-            }
-            StorageService.prototype.getLocal = function (key) {
-                return angular.fromJson(this.$window.localStorage.getItem(key));
-            };
-            StorageService.prototype.getSession = function (key) {
-                return angular.fromJson(this.$window.sessionStorage.getItem(key));
-            };
-            StorageService.prototype.removeLocal = function (key) {
-                this.$window.localStorage.removeItem(key);
-            };
-            StorageService.prototype.removeSession = function (key) {
-                this.$window.sessionStorage.removeItem(key);
-            };
-            StorageService.prototype.setLocal = function (key, value) {
-                this.$window.localStorage.setItem(key, angular.toJson(value));
-            };
-            StorageService.prototype.setSession = function (key, value) {
-                this.$window.sessionStorage.setItem(key, angular.toJson(value));
-            };
-            return StorageService;
-        }());
-        core.StorageService = StorageService;
-        core.coreModule.service('storageService', StorageService);
-    })(core = ng1Template.core || (ng1Template.core = {}));
-})(ng1Template || (ng1Template = {}));
-
-
 var bind;
 (function (bind) {
     function getDecoratorFunction(binding) {
@@ -105,6 +63,15 @@ var ng1Template;
             });
             if (reg.route) {
                 var route_1 = reg.route;
+                var resolves_1 = route_1.resolve || {};
+                var declaredResolves = reg.controller['resolves'] ? {} : undefined;
+                if (declaredResolves) {
+                    for (var r in reg.controller['resolves']) {
+                        if (reg.controller['resolves'].hasOwnProperty(r)) {
+                            resolves_1[r] = reg.controller['resolves'][r];
+                        }
+                    }
+                }
                 var resolveAttrs = [];
                 if (route_1.resolve) {
                     for (var resolveKey in route_1.resolve) {
@@ -123,7 +90,7 @@ var ng1Template;
                             name: reg.name,
                             template: template_1,
                             url: route_1.path,
-                            resolve: route_1.resolve,
+                            resolve: resolves_1,
                             params: route_1.params
                         };
                         if (route_1.abstract !== undefined) {
@@ -221,3 +188,45 @@ var state;
     }
     state.persisted = persisted;
 })(state || (state = {}));
+
+
+var ng1Template;
+(function (ng1Template) {
+    var core;
+    (function (core) {
+        /**
+         * Angular service that exposes the HTML5 local storage and session storage capabilities.
+         */
+        var StorageService = (function () {
+            /* @ngInject */
+            StorageService.$inject = ["$window"];
+            function StorageService($window) {
+                this.$window = $window;
+                if (typeof Storage === 'undefined') {
+                    throw Error("This browser does not support local or session storage.");
+                }
+            }
+            StorageService.prototype.getLocal = function (key) {
+                return angular.fromJson(this.$window.localStorage.getItem(key));
+            };
+            StorageService.prototype.getSession = function (key) {
+                return angular.fromJson(this.$window.sessionStorage.getItem(key));
+            };
+            StorageService.prototype.removeLocal = function (key) {
+                this.$window.localStorage.removeItem(key);
+            };
+            StorageService.prototype.removeSession = function (key) {
+                this.$window.sessionStorage.removeItem(key);
+            };
+            StorageService.prototype.setLocal = function (key, value) {
+                this.$window.localStorage.setItem(key, angular.toJson(value));
+            };
+            StorageService.prototype.setSession = function (key, value) {
+                this.$window.sessionStorage.setItem(key, angular.toJson(value));
+            };
+            return StorageService;
+        }());
+        core.StorageService = StorageService;
+        core.coreModule.service('storageService', StorageService);
+    })(core = ng1Template.core || (ng1Template.core = {}));
+})(ng1Template || (ng1Template = {}));
