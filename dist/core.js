@@ -200,7 +200,7 @@ function resolver(params) {
             for (var _i = 1; _i < arguments.length; _i++) {
                 args[_i - 1] = arguments[_i];
             }
-            return ("" + args[1].toLowerCase() + (args[2] || ''));
+            return ("" + args[0].toLowerCase() + (args[1] || ''));
         });
         target.constructor['resolves'][resolveKey] = params && params.length > 0 ?
             params.concat(target[key]) : target[key];

@@ -20,7 +20,7 @@ function resolver(params?: string[]) {
             target.constructor['resolves'] = {};
         }
         let resolveKey: string = key.replace(/^resolve(\w)(\w+)?$/,
-            (x: string, ...args: string[]) => `${args[1].toLowerCase()}${args[2] || ''}`);
+            (x: string, ...args: string[]) => `${args[0].toLowerCase()}${args[1] || ''}`);
         target.constructor['resolves'][resolveKey] = params && params.length > 0 ?
             params.concat(target[key]) : target[key];
     };
