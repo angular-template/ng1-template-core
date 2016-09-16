@@ -61,7 +61,7 @@ declare namespace ng1Template.core {
     interface IComponentRoute {
         path: string;
         resolve?: {
-            [key: string]: any;
+            [key: string]: Function;
         };
         params?: {
             [name: string]: string | IRouteParamsValue;

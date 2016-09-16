@@ -195,7 +195,13 @@ function resolver(params) {
         if (!target.constructor['resolves']) {
             target.constructor['resolves'] = {};
         }
-        var resolveKey = _.camelCase(key.replace(/^resolve(\w+)$/, '$1'));
+        var resolveKey = key.replace(/^resolve(\w)(\w+)?$/, function (x) {
+            var args = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                args[_i - 1] = arguments[_i];
+            }
+            return ("" + args[1].toLowerCase() + (args[2] || ''));
+        });
         target.constructor['resolves'][resolveKey] = params && params.length > 0 ?
             params.concat(target[key]) : target[key];
     };
