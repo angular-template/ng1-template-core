@@ -13,7 +13,7 @@ namespace ng1Template.core {
 
     export interface IComponentRoute {
         path: string;
-        resolve?: { [key: string]: any };
+        resolve?: { [key: string]: Function };
         params?: { [name: string]: string | IRouteParamsValue };
         abstract?: boolean;
         parent?: string | IComponentRegistration;
@@ -51,8 +51,8 @@ namespace ng1Template.core {
         if (reg.route) {
             let route: IComponentRoute = reg.route;
 
-            let resolves: {[key: string]: any} = route.resolve || {};
-            let declaredResolves: {[key: string]: any} = reg.controller['resolves'] ? {} : undefined;
+            let resolves: {[key: string]: Function} = route.resolve || {};
+            let declaredResolves: {[key: string]: Function} = reg.controller['resolves'] ? {} : undefined;
             if (declaredResolves) {
                 for (let r in reg.controller['resolves']) {
                     if (reg.controller['resolves'].hasOwnProperty(r)) {

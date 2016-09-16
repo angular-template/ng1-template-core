@@ -19,7 +19,8 @@ function resolver(params?: string[]) {
         if (!target.constructor['resolves']) {
             target.constructor['resolves'] = {};
         }
-        let resolveKey: string = _.camelCase(key.replace(/^resolve(\w+)$/, '$1'));
+        let resolveKey: string = key.replace(/^resolve(\w)(\w+)?$/,
+            (x: string, ...args: string[]) => `${args[1].toLowerCase()}${args[2] || ''}`);
         target.constructor['resolves'][resolveKey] = params && params.length > 0 ?
             params.concat(target[key]) : target[key];
     };
