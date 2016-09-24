@@ -78,7 +78,7 @@ namespace route {
                             if (definitions.hasOwnProperty(defnKey)) {
                                 let key: string = _.startsWith(defnKey, '?') ? defnKey.substr(1) : defnKey;
                                 let value: string = $stateParams[key];
-                                result[key] = convert(value, definitions[defnKey]);
+                                result[_.camelCase(key)] = convert(value, definitions[defnKey]);
                             }
                         }
                         return result;

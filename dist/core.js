@@ -254,7 +254,7 @@ var route;
                             if (definitions.hasOwnProperty(defnKey)) {
                                 var key_1 = _.startsWith(defnKey, '?') ? defnKey.substr(1) : defnKey;
                                 var value = $stateParams[key_1];
-                                result[key_1] = convert(value, definitions[defnKey]);
+                                result[_.camelCase(key_1)] = convert(value, definitions[defnKey]);
                             }
                         }
                         return result;
