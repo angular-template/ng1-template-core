@@ -99,8 +99,8 @@ declare function resolved(target: Object, key: string): void;
 declare function resolver(params?: string[]): (target: Object, key: string, descriptor: PropertyDescriptor) => void;
 declare namespace route {
     type RouteDataTypes = 'string' | 'int' | 'float' | 'boolean';
-    function query(dataType: RouteDataTypes, name: string): (target: Object, key: string) => void;
-    function param(dataType: RouteDataTypes, name: string): (target: Object, key: string) => void;
+    function query(dataType?: RouteDataTypes, name?: string): (target: Object, key: string) => void;
+    function param(dataType?: RouteDataTypes, name?: string): (target: Object, key: string) => void;
     type RouteProperties = {
         [key: string]: RouteDataTypes;
     };

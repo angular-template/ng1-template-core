@@ -29,11 +29,11 @@ function resolver(params?: string[]) {
 namespace route {
     export type RouteDataTypes = 'string' | 'int' | 'float' | 'boolean';
 
-    export function query(dataType: RouteDataTypes = 'string', name: string) {
+    export function query(dataType: RouteDataTypes = 'string', name?: string) {
         return resolveRoute(dataType, name);
     }
 
-    export function param(dataType: RouteDataTypes = 'string', name: string) {
+    export function param(dataType: RouteDataTypes = 'string', name?: string) {
         return resolveRoute(dataType, name);
     }
 
