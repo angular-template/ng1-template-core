@@ -206,6 +206,45 @@ function resolver(params) {
             params.concat(target[key]) : target[key];
     };
 }
+var route;
+(function (route) {
+    function query(dataType, name) {
+        if (dataType === void 0) { dataType = 'string'; }
+        if (name === void 0) { name = undefined; }
+        return resolveRoute(dataType, name);
+    }
+    route.query = query;
+    function param(dataType, name) {
+        if (dataType === void 0) { dataType = 'string'; }
+        if (name === void 0) { name = undefined; }
+        return resolveRoute(dataType, name);
+    }
+    route.param = param;
+    function resolveRoute(dataType, name) {
+        return function (target, key) {
+            var finalKey = name || key;
+            if (!target.constructor['bindings']) {
+                target.constructor['bindings'] = {};
+            }
+            target.constructor['bindings'][key] = '<';
+            if (!target.constructor['resolves']) {
+                target.constructor['resolves'] = {};
+            }
+            target.constructor['resolves'][key] = [
+                '$stateParams',
+                function ($stateParams) {
+                    var param = $stateParams[finalKey];
+                    switch (dataType) {
+                        case 'int': return parseInt(param);
+                        case 'float': return parseFloat(param);
+                        case 'boolean': return Boolean(param.match(/^(true|yes|y)$/i)) || param === '1';
+                        default: return param;
+                    }
+                }
+            ];
+        };
+    }
+})(route || (route = {}));
 
 
 var state;

@@ -25,3 +25,40 @@ function resolver(params?: string[]) {
             params.concat(target[key]) : target[key];
     };
 }
+
+namespace route {
+    export function query(dataType: 'string'|'int'|'float'|'boolean' = 'string', name: string = undefined) {
+        return resolveRoute(dataType, name);
+    }
+
+    export function param(dataType: 'string'|'int'|'float'|'boolean' = 'string', name: string = undefined) {
+        return resolveRoute(dataType, name);
+    }
+
+    function resolveRoute(dataType: string, name: string) {
+        return function(target: Object, key: string) {
+            let finalKey: string = name || key;
+
+            if (!target.constructor['bindings']) {
+                target.constructor['bindings'] = {};
+            }
+            target.constructor['bindings'][key] = '<';
+
+            if (!target.constructor['resolves']) {
+                target.constructor['resolves'] = {};
+            }
+            target.constructor['resolves'][key] = [
+                '$stateParams',
+                ($stateParams: ng.ui.IStateParamsService): any => {
+                    let param: string = $stateParams[finalKey];
+                    switch (dataType) {
+                        case 'int': return parseInt(param);
+                        case 'float': return parseFloat(param);
+                        case 'boolean': return Boolean(param.match(/^(true|yes|y)$/i)) || param === '1';
+                        default: return param;
+                    }
+                }
+            ];
+        }
+    }
+}
