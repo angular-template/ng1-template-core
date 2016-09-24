@@ -27,15 +27,17 @@ function resolver(params?: string[]) {
 }
 
 namespace route {
-    export function query(dataType: 'string'|'int'|'float'|'boolean' = 'string', name: string = undefined) {
+    export type RouteDataTypes = 'string' | 'int' | 'float' | 'boolean';
+
+    export function query(dataType: RouteDataTypes = 'string', name: string) {
         return resolveRoute(dataType, name);
     }
 
-    export function param(dataType: 'string'|'int'|'float'|'boolean' = 'string', name: string = undefined) {
+    export function param(dataType: RouteDataTypes = 'string', name: string) {
         return resolveRoute(dataType, name);
     }
 
-    function resolveRoute(dataType: string, name: string) {
+    function resolveRoute(dataType: RouteDataTypes, name: string) {
         return function(target: Object, key: string) {
             let finalKey: string = name || key;
 
@@ -49,16 +51,55 @@ namespace route {
             }
             target.constructor['resolves'][key] = [
                 '$stateParams',
-                ($stateParams: ng.ui.IStateParamsService): any => {
-                    let param: string = $stateParams[finalKey];
-                    switch (dataType) {
-                        case 'int': return parseInt(param);
-                        case 'float': return parseFloat(param);
-                        case 'boolean': return Boolean(param.match(/^(true|yes|y)$/i)) || param === '1';
-                        default: return param;
+                ($stateParams: ng.ui.IStateParamsService): any =>
+                    convert($stateParams[finalKey], dataType)
+            ];
+        }
+    }
+
+    export type RouteProperties = {[key: string]: RouteDataTypes};
+
+    export function multiple(parameters: RouteProperties) {
+        return function(target: Object, key: string) {
+            if (!target.constructor['bindings']) {
+                target.constructor['bindings'] = {};
+            }
+            target.constructor['bindings'][key] = '<';
+
+            if (!target.constructor['resolves']) {
+                target.constructor['resolves'] = {};
+            }
+            target.constructor['resolves'][key] = [
+                '$stateParams',
+                ($stateParams: ng.ui.IStateParamsService): {[name: string]: any} => {
+                    function getRouteValues(definitions) {
+                        let result: {[name: string]: any} = {};
+                        for (let defnKey in definitions) {
+                            if (definitions.hasOwnProperty(defnKey)) {
+                                let key: string = _.startsWith(defnKey, '?') ? defnKey.substr(1) : defnKey;
+                                let value: string = $stateParams[key];
+                                result[key] = convert(value, definitions[defnKey]);
+                            }
+                        }
+                        return result;
                     }
+
+                    let result: {[name: string]: any} = getRouteValues(parameters);
+                    return result;
                 }
             ];
+        };
+    }
+
+    function convert(value: string, dataType: RouteDataTypes): any {
+        if (!value) {
+            return undefined;
+        }
+        switch (dataType) {
+            case 'int': return parseInt(value);
+            case 'float': return parseFloat(value);
+            case 'boolean': return Boolean(value.match(/^(true|yes|y|1)$/i));
+            default: return value;
         }
     }
 }

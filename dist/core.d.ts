@@ -98,8 +98,13 @@ declare namespace ng1Template.core {
 declare function resolved(target: Object, key: string): void;
 declare function resolver(params?: string[]): (target: Object, key: string, descriptor: PropertyDescriptor) => void;
 declare namespace route {
-    function query(dataType?: 'string' | 'int' | 'float' | 'boolean', name?: string): (target: Object, key: string) => void;
-    function param(dataType?: 'string' | 'int' | 'float' | 'boolean', name?: string): (target: Object, key: string) => void;
+    type RouteDataTypes = 'string' | 'int' | 'float' | 'boolean';
+    function query(dataType: RouteDataTypes, name: string): (target: Object, key: string) => void;
+    function param(dataType: RouteDataTypes, name: string): (target: Object, key: string) => void;
+    type RouteProperties = {
+        [key: string]: RouteDataTypes;
+    };
+    function multiple(parameters: RouteProperties): (target: Object, key: string) => void;
 }
 declare namespace state {
     function inMemory(): (target: Object, key: string) => void;

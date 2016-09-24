@@ -210,13 +210,11 @@ var route;
 (function (route) {
     function query(dataType, name) {
         if (dataType === void 0) { dataType = 'string'; }
-        if (name === void 0) { name = undefined; }
         return resolveRoute(dataType, name);
     }
     route.query = query;
     function param(dataType, name) {
         if (dataType === void 0) { dataType = 'string'; }
-        if (name === void 0) { name = undefined; }
         return resolveRoute(dataType, name);
     }
     route.param = param;
@@ -233,16 +231,51 @@ var route;
             target.constructor['resolves'][key] = [
                 '$stateParams',
                 function ($stateParams) {
-                    var param = $stateParams[finalKey];
-                    switch (dataType) {
-                        case 'int': return parseInt(param);
-                        case 'float': return parseFloat(param);
-                        case 'boolean': return Boolean(param.match(/^(true|yes|y)$/i)) || param === '1';
-                        default: return param;
-                    }
+                    return convert($stateParams[finalKey], dataType);
                 }
             ];
         };
+    }
+    function multiple(parameters) {
+        return function (target, key) {
+            if (!target.constructor['bindings']) {
+                target.constructor['bindings'] = {};
+            }
+            target.constructor['bindings'][key] = '<';
+            if (!target.constructor['resolves']) {
+                target.constructor['resolves'] = {};
+            }
+            target.constructor['resolves'][key] = [
+                '$stateParams',
+                function ($stateParams) {
+                    function getRouteValues(definitions) {
+                        var result = {};
+                        for (var defnKey in definitions) {
+                            if (definitions.hasOwnProperty(defnKey)) {
+                                var key_1 = _.startsWith(defnKey, '?') ? defnKey.substr(1) : defnKey;
+                                var value = $stateParams[key_1];
+                                result[key_1] = convert(value, definitions[defnKey]);
+                            }
+                        }
+                        return result;
+                    }
+                    var result = getRouteValues(parameters);
+                    return result;
+                }
+            ];
+        };
+    }
+    route.multiple = multiple;
+    function convert(value, dataType) {
+        if (!value) {
+            return undefined;
+        }
+        switch (dataType) {
+            case 'int': return parseInt(value);
+            case 'float': return parseFloat(value);
+            case 'boolean': return Boolean(value.match(/^(true|yes|y|1)$/i));
+            default: return value;
+        }
     }
 })(route || (route = {}));
 
