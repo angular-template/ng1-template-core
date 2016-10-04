@@ -117,7 +117,7 @@ namespace ng1Template.core {
         registerComponent({
             name: reg.name,
             controller: reg.controller,
-            templateUrl: reg.templateUrl,
+            templateUrl: templateUrl,
             templateUrlRoot: reg.templateUrlRoot,
             route: {
                 abstract: true,

@@ -3,6 +3,21 @@
 declare namespace ng1Template.core {
     const coreModule: ng.IModule;
 }
+declare namespace ng1Template.core {
+    /**
+     * Angular service that exposes the HTML5 local storage and session storage capabilities.
+     */
+    class StorageService {
+        private $window;
+        constructor($window: ng.IWindowService);
+        getLocal(key: string): any;
+        getSession(key: string): any;
+        removeLocal(key: string): void;
+        removeSession(key: string): void;
+        setLocal(key: string, value: any): void;
+        setSession(key: string, value: any): void;
+    }
+}
 declare namespace bind {
     function oneWay(): (target: Object, key: string) => void;
     function twoWay(): (target: Object, key: string) => void;
@@ -95,19 +110,4 @@ declare namespace state {
     function inMemory(): (target: Object, key: string) => void;
     function session(): (target: Object, key: string) => void;
     function persisted(): (target: Object, key: string) => void;
-}
-declare namespace ng1Template.core {
-    /**
-     * Angular service that exposes the HTML5 local storage and session storage capabilities.
-     */
-    class StorageService {
-        private $window;
-        constructor($window: ng.IWindowService);
-        getLocal(key: string): any;
-        getSession(key: string): any;
-        removeLocal(key: string): void;
-        removeSession(key: string): void;
-        setLocal(key: string, value: any): void;
-        setSession(key: string, value: any): void;
-    }
 }
