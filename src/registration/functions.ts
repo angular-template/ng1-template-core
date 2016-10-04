@@ -30,7 +30,7 @@ namespace ng1Template.core {
         module: ng.IModule
     ) {
         let templateUrlRoot: string = reg.templateUrlRoot || `/client/modules/${module.name}/`;
-        let templateUrl: string = reg.templateUrl || `${reg.name}/${reg.name}.html`
+        let templateUrl: string = reg.templateUrl || `${reg.name}/${reg.name}.html`;
 
         let bindings: { [binding: string]: string } = reg.controller['bindings'] ? {} : undefined;
         if (bindings) {
@@ -111,6 +111,9 @@ namespace ng1Template.core {
         reg: ILayoutRegistration,
         module: ng.IModule
     ) {
+        let matches: RegExpMatchArray = reg.name.match(/^(\w+)-layout$/);
+        let layoutName: string = matches ? matches[1] : reg.name;
+        let templateUrl: string = reg.templateUrl || `layouts/${layoutName}/${layoutName}.html`;
         registerComponent({
             name: reg.name,
             controller: reg.controller,
