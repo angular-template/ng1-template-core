@@ -17,7 +17,8 @@ namespace ng1Template.core {
         templateUrlRoot?: string;
     }
 
-    export type ComponentDecoratorFactory = (details: IComponentDetails, route?: IComponentRoute) => ClassDecorator;
+    export type ComponentDecoratorFactory = (details: IComponentDetails) => ClassDecorator;
+    export type PageDecoratorFactory = (details: IComponentDetails, route: IComponentRoute) => ClassDecorator;
 
     export interface ILayoutDetails {
         name: string;
