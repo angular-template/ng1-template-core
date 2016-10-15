@@ -71,8 +71,14 @@ gulp.task('def_generate', function() {
         .pipe(gulp.dest('./typings/'));
 });
 
-gulp.task('clean', function(done) {
+gulp.task('clean', ['clean:dist', 'clean:typings']);
+
+gulp.task('clean:dist', function(done) {
     clean('./dist/', done);
+});
+
+gulp.task('clean:typings', function(done) {
+    clean('./typings/package.d.ts', done);
 });
 
 gulp.task('setup', function() {

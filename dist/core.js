@@ -9,48 +9,6 @@ var ng1Template;
 })(ng1Template || (ng1Template = {}));
 
 
-var ng1Template;
-(function (ng1Template) {
-    var core;
-    (function (core) {
-        /**
-         * Angular service that exposes the HTML5 local storage and session storage capabilities.
-         */
-        var StorageService = (function () {
-            /* @ngInject */
-            StorageService.$inject = ["$window"];
-            function StorageService($window) {
-                this.$window = $window;
-                if (typeof Storage === 'undefined') {
-                    throw Error("This browser does not support local or session storage.");
-                }
-            }
-            StorageService.prototype.getLocal = function (key) {
-                return angular.fromJson(this.$window.localStorage.getItem(key));
-            };
-            StorageService.prototype.getSession = function (key) {
-                return angular.fromJson(this.$window.sessionStorage.getItem(key));
-            };
-            StorageService.prototype.removeLocal = function (key) {
-                this.$window.localStorage.removeItem(key);
-            };
-            StorageService.prototype.removeSession = function (key) {
-                this.$window.sessionStorage.removeItem(key);
-            };
-            StorageService.prototype.setLocal = function (key, value) {
-                this.$window.localStorage.setItem(key, angular.toJson(value));
-            };
-            StorageService.prototype.setSession = function (key, value) {
-                this.$window.sessionStorage.setItem(key, angular.toJson(value));
-            };
-            return StorageService;
-        }());
-        core.StorageService = StorageService;
-        core.coreModule.service('storageService', StorageService);
-    })(core = ng1Template.core || (ng1Template.core = {}));
-})(ng1Template || (ng1Template = {}));
-
-
 var bind;
 (function (bind) {
     function getDecoratorFunction(binding) {
@@ -87,8 +45,20 @@ var ng1Template;
     var core;
     (function (core) {
         function registerComponent(reg, module) {
+            //Provide default for templateUrlRoot, if not specified
             var templateUrlRoot = reg.templateUrlRoot || "/client/modules/" + module.name + "/";
+            //Provide default for templateUrl, if not specified, and resolve any placeholders.
+            //Placeholders are in the for <% name %>
             var templateUrl = reg.templateUrl || reg.name + "/" + reg.name + ".html";
+            templateUrl = templateUrl.replace(/<%\s*(\w+)\s*%>/i, function (match, key) {
+                switch (key.toLowerCase()) {
+                    case 'default': return reg.name + "/" + reg.name + ".html";
+                    case 'name': return reg.name;
+                    case 'camelCaseName': return _.camelCase(reg.name);
+                    case 'kebabCaseName': return _.kebabCase(reg.name);
+                    default: throw new Error("Cannot understand templateUrl placeholder '" + key + "' as specified in component registration " + JSON.stringify(reg));
+                }
+            });
             var bindings = reg.controller['bindings'] ? {} : undefined;
             if (bindings) {
                 for (var b in reg.controller['bindings']) {
@@ -127,11 +97,18 @@ var ng1Template;
                     "<" + reg.name + " " + resolveAttrs.join(' ') + "></" + reg.name + ">";
                 module.config(['$stateProvider',
                     function ($stateProvider) {
+                        var routePath = route_1.path;
+                        if (!routePath && routePath !== '') {
+                            var pathParts = templateUrl.split('/');
+                            if (pathParts.length >= 2) {
+                                routePath = '/' + pathParts.slice(0, pathParts.length - 1).join('/');
+                            }
+                        }
                         //TODO: Use component field instead of template. Consult Sunny and see if component is available in current version of ui-router.
                         var state = {
                             name: reg.name,
                             template: template_1,
-                            url: route_1.path,
+                            url: routePath,
                             resolve: resolves_1,
                             params: route_1.params
                         };
@@ -327,3 +304,45 @@ var state;
     }
     state.persisted = persisted;
 })(state || (state = {}));
+
+
+var ng1Template;
+(function (ng1Template) {
+    var core;
+    (function (core) {
+        /**
+         * Angular service that exposes the HTML5 local storage and session storage capabilities.
+         */
+        var StorageService = (function () {
+            /* @ngInject */
+            StorageService.$inject = ["$window"];
+            function StorageService($window) {
+                this.$window = $window;
+                if (typeof Storage === 'undefined') {
+                    throw Error("This browser does not support local or session storage.");
+                }
+            }
+            StorageService.prototype.getLocal = function (key) {
+                return angular.fromJson(this.$window.localStorage.getItem(key));
+            };
+            StorageService.prototype.getSession = function (key) {
+                return angular.fromJson(this.$window.sessionStorage.getItem(key));
+            };
+            StorageService.prototype.removeLocal = function (key) {
+                this.$window.localStorage.removeItem(key);
+            };
+            StorageService.prototype.removeSession = function (key) {
+                this.$window.sessionStorage.removeItem(key);
+            };
+            StorageService.prototype.setLocal = function (key, value) {
+                this.$window.localStorage.setItem(key, angular.toJson(value));
+            };
+            StorageService.prototype.setSession = function (key, value) {
+                this.$window.sessionStorage.setItem(key, angular.toJson(value));
+            };
+            return StorageService;
+        }());
+        core.StorageService = StorageService;
+        core.coreModule.service('storageService', StorageService);
+    })(core = ng1Template.core || (ng1Template.core = {}));
+})(ng1Template || (ng1Template = {}));

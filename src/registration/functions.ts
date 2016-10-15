@@ -29,8 +29,21 @@ namespace ng1Template.core {
         reg: IComponentRegistration,
         module: ng.IModule
     ) {
+        //Provide default for templateUrlRoot, if not specified
         let templateUrlRoot: string = reg.templateUrlRoot || `/client/modules/${module.name}/`;
+
+        //Provide default for templateUrl, if not specified, and resolve any placeholders.
+        //Placeholders are in the for <% name %>
         let templateUrl: string = reg.templateUrl || `${reg.name}/${reg.name}.html`;
+        templateUrl = templateUrl.replace(/<%\s*(\w+)\s*%>/i, (match, key) => {
+            switch (key.toLowerCase()) {
+                case 'default': return `${reg.name}/${reg.name}.html`;
+                case 'name': return reg.name;
+                case 'camelCaseName': return _.camelCase(reg.name);
+                case 'kebabCaseName': return _.kebabCase(reg.name);
+                default: throw new Error(`Cannot understand templateUrl placeholder '${key}' as specified in component registration ${JSON.stringify(reg)}`);
+            }
+        })
 
         let bindings: { [binding: string]: string } = reg.controller['bindings'] ? {} : undefined;
         if (bindings) {
@@ -75,11 +88,19 @@ namespace ng1Template.core {
 
             module.config(['$stateProvider',
                 function ($stateProvider: ng.ui.IStateProvider) {
+                    let routePath: string = route.path;
+                    if (!routePath && routePath !== '') {
+                        let pathParts: string[] = templateUrl.split('/');
+                        if (pathParts.length >= 2) {
+                            routePath = '/' + pathParts.slice(0, pathParts.length - 1).join('/');
+                        }
+                    }
+
                     //TODO: Use component field instead of template. Consult Sunny and see if component is available in current version of ui-router.
                     let state: ng.ui.IState = {
                         name: reg.name,
                         template: template,
-                        url: route.path,
+                        url: routePath,
                         resolve: resolves,
                         params: route.params
                     };
