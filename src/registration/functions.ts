@@ -12,7 +12,7 @@ namespace ng1Template.core {
     }
 
     export interface IComponentRoute {
-        path: string;
+        path?: string;
         resolve?: { [key: string]: Function };
         params?: { [name: string]: string | IRouteParamsValue };
         abstract?: boolean;
