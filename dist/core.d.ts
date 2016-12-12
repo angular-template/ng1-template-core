@@ -36,7 +36,7 @@ declare namespace ng1Template.core {
 declare namespace ng1Template.core {
     interface IComponentRegistration {
         name: string;
-        controller: ng.IComponentController;
+        controller: ng.Injectable<ng.IControllerConstructor>;
         templateUrl: string;
         templateUrlRoot?: string;
         bindings?: {
@@ -63,7 +63,7 @@ declare namespace ng1Template.core {
     function registerComponent(reg: IComponentRegistration, module: ng.IModule): void;
     interface ILayoutRegistration {
         name: string;
-        controller: ng.IComponentController;
+        controller: ng.Injectable<ng.IControllerConstructor>;
         templateUrl: string;
         templateUrlRoot?: string;
     }

@@ -22,8 +22,17 @@ namespace state {
                 setter: (value: any) => target[`_${key}`] = value
             };
             case 2: return {
-                getter: () => JSON.parse(window.sessionStorage.getItem(key)),
-                setter: (value: any) => window.sessionStorage.setItem(key, JSON.stringify(value))
+                getter: () => {
+                    let value = window.sessionStorage.getItem(key);
+                    return value == undefined || value == null ? undefined : JSON.parse(window.sessionStorage.getItem(key))
+                },
+                setter: (value: any) => {
+                    if (key == undefined || key == null) {
+                        window.sessionStorage.removeItem(key);
+                    } else {
+                        window.sessionStorage.setItem(key, JSON.stringify(value));
+                    }
+                }
             };
             case 3: return {
                 getter: () => JSON.parse(window.localStorage.getItem(key)),

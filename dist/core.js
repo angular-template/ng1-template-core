@@ -180,7 +180,7 @@ function resolver(params) {
             for (var _i = 1; _i < arguments.length; _i++) {
                 args[_i - 1] = arguments[_i];
             }
-            return ("" + args[0].toLowerCase() + (args[1] || ''));
+            return "" + args[0].toLowerCase() + (args[1] || '');
         });
         target.constructor['resolves'][resolveKey] = params && params.length > 0 ?
             params.concat(target[key]) : target[key];
@@ -277,12 +277,22 @@ var state;
     function getGetterSetter(type, target, key) {
         switch (type) {
             case 1: return {
-                getter: function () { return target[("_" + key)]; },
-                setter: function (value) { return target[("_" + key)] = value; }
+                getter: function () { return target["_" + key]; },
+                setter: function (value) { return target["_" + key] = value; }
             };
             case 2: return {
-                getter: function () { return JSON.parse(window.sessionStorage.getItem(key)); },
-                setter: function (value) { return window.sessionStorage.setItem(key, JSON.stringify(value)); }
+                getter: function () {
+                    var value = window.sessionStorage.getItem(key);
+                    return value == undefined || value == null ? undefined : JSON.parse(window.sessionStorage.getItem(key));
+                },
+                setter: function (value) {
+                    if (key == undefined || key == null) {
+                        window.sessionStorage.removeItem(key);
+                    }
+                    else {
+                        window.sessionStorage.setItem(key, JSON.stringify(value));
+                    }
+                }
             };
             case 3: return {
                 getter: function () { return JSON.parse(window.localStorage.getItem(key)); },

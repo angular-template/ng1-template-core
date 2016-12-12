@@ -2,9 +2,9 @@
   "name": "ng1-template-core",
   "dependencies": {},
   "globalDependencies": {
-    "angular": "registry:dt/angular#1.5.0+20160709055139",
-    "angular-ui-router": "registry:dt/angular-ui-router#1.1.5+20160707113237",
-    "jquery": "registry:dt/jquery#1.10.0+20160704162008",
-    "lodash": "registry:dt/lodash#3.10.0+20160619033623"
+    "angular": "registry:dt/angular#1.5.0+20161208205636",
+    "angular-ui-router": "registry:dt/angular-ui-router#1.1.5+20161110053620",
+    "jquery": "registry:dt/jquery#1.10.0+20160929162922",
+    "lodash": "registry:dt/lodash#4.14.0+20161110215204"
   }
 }

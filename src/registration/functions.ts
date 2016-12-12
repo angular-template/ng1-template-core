@@ -4,7 +4,7 @@
 namespace ng1Template.core {
     export interface IComponentRegistration {
         name: string;
-        controller: ng.IComponentController;
+        controller: ng.Injectable<ng.IControllerConstructor>;
         templateUrl: string;
         templateUrlRoot?: string;
         bindings?: { [binding: string]: string };
@@ -123,7 +123,7 @@ namespace ng1Template.core {
 
     export interface ILayoutRegistration {
         name: string;
-        controller: ng.IComponentController;
+        controller: ng.Injectable<ng.IControllerConstructor>;
         templateUrl: string;
         templateUrlRoot?: string;
     }

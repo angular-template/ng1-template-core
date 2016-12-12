@@ -81,12 +81,6 @@ gulp.task('clean:typings', function(done) {
     clean('./typings/package.d.ts', done);
 });
 
-gulp.task('setup', function() {
-    log('Setting up Git hooks');
-    return gulp.src('./.pre-commit')
-        .pipe($.symlink('./.git/hooks/pre-commit', {force: true}));
-});
-
 function clean(path, done) {
     log(`Deleting: ${path}`);
     del(path);
