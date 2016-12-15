@@ -44,6 +44,7 @@ export class MyPage {
 ```
 
 > Note: Although the resolver methods are written like instance methods, they are actually executed in a different context and hence should not access any other instance members of the class.
+
 ## State decorators
 State decorators simplify writing of Angular services that can persist their data to session or local storage.
 
