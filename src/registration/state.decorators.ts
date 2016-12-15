@@ -17,17 +17,21 @@ namespace state {
 
     function getGetterSetter(type: number, target: Object, key: string): IGetterSetter {
         switch (type) {
-            case 1: return {
-                getter: () => target[`_${key}`],
-                setter: (value: any) => target[`_${key}`] = value
-            };
             case 2: return {
                 getter: () => {
                     let value = window.sessionStorage.getItem(key);
-                    return value == undefined || value == null ? undefined : JSON.parse(window.sessionStorage.getItem(key))
+                    if (value == undefined || value == null) {
+                        return undefined;
+                    }
+                    try {
+                        let result = JSON.parse(value);
+                        return result;
+                    } catch (e) {
+                        return value;
+                    }
                 },
                 setter: (value: any) => {
-                    if (key == undefined || key == null) {
+                    if (value == undefined || value == null) {
                         window.sessionStorage.removeItem(key);
                     } else {
                         window.sessionStorage.setItem(key, JSON.stringify(value));
@@ -35,15 +39,28 @@ namespace state {
                 }
             };
             case 3: return {
-                getter: () => JSON.parse(window.localStorage.getItem(key)),
-                setter: (value: any) => window.localStorage.setItem(key, JSON.stringify(value))
+                getter: () => {
+                    let value = window.localStorage.getItem(key);
+                    if (value == undefined || value == null) {
+                        return undefined;
+                    }
+                    try {
+                        let result = JSON.parse(value);
+                        return result;
+                    } catch (e) {
+                        return value;
+                    }
+                },
+                setter: (value: any) => {
+                    if (value == undefined || value == null) {
+                        window.localStorage.removeItem(key);
+                    } else {
+                        window.localStorage.setItem(key, JSON.stringify(value));
+                    }
+                }
             };
-            default: throw new Error(`Internal error. Unknown type ${type}`);
+            default: throw new Error(`Internal error for @state decorator. Unknown type ${type}`);
         }
-    }
-
-    export function inMemory() {
-        return getDecoratorFunction(1);
     }
 
     export function session() {
