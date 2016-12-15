@@ -93,7 +93,6 @@ declare namespace route {
     function multiple(parameters: RouteProperties): (target: Object, key: string) => void;
 }
 declare namespace state {
-    function inMemory(): (target: Object, key: string) => void;
     function session(): (target: Object, key: string) => void;
     function persisted(): (target: Object, key: string) => void;
 }

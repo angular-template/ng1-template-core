@@ -276,17 +276,22 @@ var state;
     }
     function getGetterSetter(type, target, key) {
         switch (type) {
-            case 1: return {
-                getter: function () { return target["_" + key]; },
-                setter: function (value) { return target["_" + key] = value; }
-            };
             case 2: return {
                 getter: function () {
                     var value = window.sessionStorage.getItem(key);
-                    return value == undefined || value == null ? undefined : JSON.parse(window.sessionStorage.getItem(key));
+                    if (value == undefined || value == null) {
+                        return undefined;
+                    }
+                    try {
+                        var result = JSON.parse(value);
+                        return result;
+                    }
+                    catch (e) {
+                        return value;
+                    }
                 },
                 setter: function (value) {
-                    if (key == undefined || key == null) {
+                    if (value == undefined || value == null) {
                         window.sessionStorage.removeItem(key);
                     }
                     else {
@@ -295,16 +300,31 @@ var state;
                 }
             };
             case 3: return {
-                getter: function () { return JSON.parse(window.localStorage.getItem(key)); },
-                setter: function (value) { return window.localStorage.setItem(key, JSON.stringify(value)); }
+                getter: function () {
+                    var value = window.localStorage.getItem(key);
+                    if (value == undefined || value == null) {
+                        return undefined;
+                    }
+                    try {
+                        var result = JSON.parse(value);
+                        return result;
+                    }
+                    catch (e) {
+                        return value;
+                    }
+                },
+                setter: function (value) {
+                    if (value == undefined || value == null) {
+                        window.localStorage.removeItem(key);
+                    }
+                    else {
+                        window.localStorage.setItem(key, JSON.stringify(value));
+                    }
+                }
             };
-            default: throw new Error("Internal error. Unknown type " + type);
+            default: throw new Error("Internal error for @state decorator. Unknown type " + type);
         }
     }
-    function inMemory() {
-        return getDecoratorFunction(1);
-    }
-    state.inMemory = inMemory;
     function session() {
         return getDecoratorFunction(2);
     }
