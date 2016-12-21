@@ -31,20 +31,15 @@ namespace ng1Template.core {
     ) {
         //Provide default for templateUrlRoot, if not specified
         let templateUrlRoot: string = reg.templateUrlRoot || `/client/modules/${module.name}/`;
+        //TODO: Template URL root should start and end with '/'
 
-        //Provide default for templateUrl, if not specified, and resolve any placeholders.
-        //Placeholders are in the for <% name %>
+        //Provide default for templateUrl, if not specified, and ensure that it does not start with a '/'.
         let templateUrl: string = reg.templateUrl || `${reg.name}/${reg.name}.html`;
-        templateUrl = templateUrl.replace(/<%\s*(\w+)\s*%>/i, (match, key) => {
-            switch (key.toLowerCase()) {
-                case 'default': return `${reg.name}/${reg.name}.html`;
-                case 'name': return reg.name;
-                case 'camelCaseName': return _.camelCase(reg.name);
-                case 'kebabCaseName': return _.kebabCase(reg.name);
-                default: throw new Error(`Cannot understand templateUrl placeholder '${key}' as specified in component registration ${JSON.stringify(reg)}`);
-            }
-        })
+        if (_.startsWith(templateUrl, '/')) {
+            templateUrl = templateUrl.substr(1);
+        }
 
+        //Read the bindings declared using the @bind decorators and add them to an object.
         let bindings: { [binding: string]: string } = reg.controller['bindings'] ? {} : undefined;
         if (bindings) {
             for (let b in reg.controller['bindings']) {
@@ -64,6 +59,8 @@ namespace ng1Template.core {
         if (reg.route) {
             let route: IComponentRoute = reg.route;
 
+            //Read the resolves declared using the @resolved and @resolver decorators and add them
+            //to any existing resolves declared as part of the @Page declaration.
             let resolves: {[key: string]: Function} = route.resolve || {};
             let declaredResolves: {[key: string]: Function} = reg.controller['resolves'] ? {} : undefined;
             if (declaredResolves) {
@@ -74,6 +71,7 @@ namespace ng1Template.core {
                 }
             }
 
+            //From the full set of resolves, build the attribute string to add to the template string.
             let resolveAttrs: string[] = [];
             if (resolves) {
                 for (let resolveKey in resolves) {
@@ -88,12 +86,13 @@ namespace ng1Template.core {
 
             module.config(['$stateProvider',
                 function ($stateProvider: ng.ui.IStateProvider) {
+                    //Ensure route path specified and starts with a '/'
                     let routePath: string = route.path;
-                    if (!routePath && routePath !== '') {
-                        let pathParts: string[] = templateUrl.split('/');
-                        if (pathParts.length >= 2) {
-                            routePath = '/' + pathParts.slice(0, pathParts.length - 1).join('/');
-                        }
+                    if (!routePath) {
+                        throw new Error(`Specify a route path for the page ${reg.name}.`);
+                    }
+                    if (!_.startsWith(routePath, '/')) {
+                        routePath = '/' + routePath;
                     }
 
                     //TODO: Use component field instead of template. Consult Sunny and see if component is available in current version of ui-router.
