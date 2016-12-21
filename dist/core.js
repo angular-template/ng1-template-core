@@ -45,20 +45,21 @@ var ng1Template;
     var core;
     (function (core) {
         function registerComponent(reg, module) {
-            //Provide default for templateUrlRoot, if not specified
+            //Provide default for templateUrlRoot, if not specified, and ensure it starts and ends with a '/'.
             var templateUrlRoot = reg.templateUrlRoot || "/client/modules/" + module.name + "/";
-            //Provide default for templateUrl, if not specified, and resolve any placeholders.
-            //Placeholders are in the for <% name %>
+            if (!_.startsWith(templateUrlRoot, '/')) {
+                templateUrlRoot = '/' + templateUrlRoot;
+            }
+            if (!_.endsWith(templateUrlRoot, '/')) {
+                templateUrlRoot += '/';
+            }
+            //TODO: Template URL root should start and end with '/'
+            //Provide default for templateUrl, if not specified, and ensure that it does not start with a '/'.
             var templateUrl = reg.templateUrl || reg.name + "/" + reg.name + ".html";
-            templateUrl = templateUrl.replace(/<%\s*(\w+)\s*%>/i, function (match, key) {
-                switch (key.toLowerCase()) {
-                    case 'default': return reg.name + "/" + reg.name + ".html";
-                    case 'name': return reg.name;
-                    case 'camelCaseName': return _.camelCase(reg.name);
-                    case 'kebabCaseName': return _.kebabCase(reg.name);
-                    default: throw new Error("Cannot understand templateUrl placeholder '" + key + "' as specified in component registration " + JSON.stringify(reg));
-                }
-            });
+            if (_.startsWith(templateUrl, '/')) {
+                templateUrl = templateUrl.substr(1);
+            }
+            //Read the bindings declared using the @bind decorators and add them to an object.
             var bindings = reg.controller['bindings'] ? {} : undefined;
             if (bindings) {
                 for (var b in reg.controller['bindings']) {
@@ -75,6 +76,8 @@ var ng1Template;
             });
             if (reg.route) {
                 var route_1 = reg.route;
+                //Read the resolves declared using the @resolved and @resolver decorators and add them
+                //to any existing resolves declared as part of the @Page declaration.
                 var resolves_1 = route_1.resolve || {};
                 var declaredResolves = reg.controller['resolves'] ? {} : undefined;
                 if (declaredResolves) {
@@ -84,6 +87,7 @@ var ng1Template;
                         }
                     }
                 }
+                //From the full set of resolves, build the attribute string to add to the template string.
                 var resolveAttrs = [];
                 if (resolves_1) {
                     for (var resolveKey in resolves_1) {
@@ -97,12 +101,13 @@ var ng1Template;
                     "<" + reg.name + " " + resolveAttrs.join(' ') + "></" + reg.name + ">";
                 module.config(['$stateProvider',
                     function ($stateProvider) {
+                        //Ensure route path specified and starts with a '/'
                         var routePath = route_1.path;
-                        if (!routePath && routePath !== '') {
-                            var pathParts = templateUrl.split('/');
-                            if (pathParts.length >= 2) {
-                                routePath = '/' + pathParts.slice(0, pathParts.length - 1).join('/');
-                            }
+                        if (!routePath) {
+                            throw new Error("Specify a route path for the page " + reg.name + ".");
+                        }
+                        if (!_.startsWith(routePath, '/')) {
+                            routePath = '/' + routePath;
                         }
                         //TODO: Use component field instead of template. Consult Sunny and see if component is available in current version of ui-router.
                         var state = {

@@ -45,7 +45,7 @@ declare namespace ng1Template.core {
         route?: IComponentRoute;
     }
     interface IComponentRoute {
-        path?: string;
+        path: string;
         resolve?: {
             [key: string]: Function;
         };

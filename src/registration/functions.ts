@@ -12,7 +12,7 @@ namespace ng1Template.core {
     }
 
     export interface IComponentRoute {
-        path?: string;
+        path: string;
         resolve?: { [key: string]: Function };
         params?: { [name: string]: string | IRouteParamsValue };
         abstract?: boolean;
@@ -29,8 +29,14 @@ namespace ng1Template.core {
         reg: IComponentRegistration,
         module: ng.IModule
     ) {
-        //Provide default for templateUrlRoot, if not specified
+        //Provide default for templateUrlRoot, if not specified, and ensure it starts and ends with a '/'.
         let templateUrlRoot: string = reg.templateUrlRoot || `/client/modules/${module.name}/`;
+        if (!_.startsWith(templateUrlRoot, '/')) {
+            templateUrlRoot = '/' + templateUrlRoot;
+        }
+        if (!_.endsWith(templateUrlRoot, '/')) {
+            templateUrlRoot += '/';
+        }
         //TODO: Template URL root should start and end with '/'
 
         //Provide default for templateUrl, if not specified, and ensure that it does not start with a '/'.
