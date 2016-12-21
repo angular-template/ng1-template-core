@@ -106,7 +106,7 @@ var ng1Template;
                         if (!routePath) {
                             throw new Error("Specify a route path for the page " + reg.name + ".");
                         }
-                        if (!_.startsWith(routePath, '/')) {
+                        if (routePath !== '^' && !_.startsWith(routePath, '/')) {
                             routePath = '/' + routePath;
                         }
                         //TODO: Use component field instead of template. Consult Sunny and see if component is available in current version of ui-router.
