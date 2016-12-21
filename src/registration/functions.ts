@@ -4,7 +4,7 @@
 namespace ng1Template.core {
     export interface IComponentRegistration {
         name: string;
-        controller: ng.Injectable<ng.IControllerConstructor>;
+        controller: Function | ng.Injectable<ng.IControllerConstructor>;
         templateUrl: string;
         templateUrlRoot?: string;
         bindings?: { [binding: string]: string };
@@ -56,7 +56,7 @@ namespace ng1Template.core {
 
         module.component(_.camelCase(reg.name), {
             templateUrl: `${templateUrlRoot}${templateUrl}`,
-            controller: reg.controller,
+            controller: reg.controller as ng.Injectable<ng.IControllerConstructor>,
             controllerAs: _.camelCase(reg.name),
             bindings: bindings
         });
