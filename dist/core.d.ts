@@ -63,7 +63,7 @@ declare namespace ng1Template.core {
     function registerComponent(reg: IComponentRegistration, module: ng.IModule): void;
     interface ILayoutRegistration {
         name: string;
-        controller: ng.Injectable<ng.IControllerConstructor>;
+        controller: Function | ng.Injectable<ng.IControllerConstructor>;
         templateUrl: string;
         templateUrlRoot?: string;
     }

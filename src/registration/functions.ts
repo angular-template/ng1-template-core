@@ -123,7 +123,7 @@ namespace ng1Template.core {
 
     export interface ILayoutRegistration {
         name: string;
-        controller: ng.Injectable<ng.IControllerConstructor>;
+        controller: Function | ng.Injectable<ng.IControllerConstructor>;
         templateUrl: string;
         templateUrlRoot?: string;
     }
