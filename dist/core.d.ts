@@ -2,12 +2,6 @@
 declare namespace ng1Template.core {
     const coreModule: ng.IModule;
 }
-declare namespace bind {
-    function oneWay(): (target: Object, key: string) => void;
-    function twoWay(): (target: Object, key: string) => void;
-    function string(): (target: Object, key: string) => void;
-    function event(): (target: Object, key: string) => void;
-}
 declare namespace ng1Template.core {
     /**
      * Represents a decorator function for a class.
@@ -31,6 +25,33 @@ declare namespace ng1Template.core {
     }
     type LayoutDecoratorFactory = (details: ILayoutDetails) => ClassDecorator;
     type ServiceDecoratorFactory = (name: string) => ClassDecorator;
+}
+declare namespace bind {
+    function oneWay(): (target: Object, key: string) => void;
+    function twoWay(): (target: Object, key: string) => void;
+    function string(): (target: Object, key: string) => void;
+    function event(): (target: Object, key: string) => void;
+}
+declare function resolved(target: Object, key: string): void;
+declare function resolver(params?: string[]): (target: Object, key: string, descriptor: PropertyDescriptor) => void;
+declare namespace route {
+    type RouteDataTypes = 'string' | 'int' | 'float' | 'boolean';
+    function query(dataType?: RouteDataTypes, name?: string): (target: Object, key: string) => void;
+    function param(dataType?: RouteDataTypes, name?: string): (target: Object, key: string) => void;
+    type RouteProperties = {
+        [key: string]: RouteDataTypes;
+    };
+    function multiple(parameters: RouteProperties): (target: Object, key: string) => void;
+}
+declare namespace state {
+    function session(): (target: Object, key: string) => void;
+    function persisted(): (target: Object, key: string) => void;
+}
+declare namespace ng1Template.core {
+    function registerComponent(reg: IComponentRegistration, module: ng.IModule): void;
+    function registerLayout(reg: ILayoutRegistration, module: ng.IModule): void;
+    function registerService(reg: IServiceRegistration): void;
+    function registerState(reg: IStateRegistration): void;
 }
 declare namespace ng1Template.core {
     interface IComponentRegistration {
@@ -59,41 +80,22 @@ declare namespace ng1Template.core {
         array?: boolean;
         squash?: boolean | string;
     }
-    function registerComponent(reg: IComponentRegistration, module: ng.IModule): void;
     interface ILayoutRegistration {
         name: string;
         controller: Function | ng.Injectable<ng.IControllerConstructor>;
         templateUrl: string;
         templateUrlRoot?: string;
     }
-    function registerLayout(reg: ILayoutRegistration, module: ng.IModule): void;
     interface IServiceRegistration {
         name: string;
         service: Function;
         module: ng.IModule;
     }
-    function registerService(reg: IServiceRegistration): void;
     interface IStateRegistration {
         name: string;
         state: Function;
         module: ng.IModule;
     }
-    function registerState(reg: IStateRegistration): void;
-}
-declare function resolved(target: Object, key: string): void;
-declare function resolver(params?: string[]): (target: Object, key: string, descriptor: PropertyDescriptor) => void;
-declare namespace route {
-    type RouteDataTypes = 'string' | 'int' | 'float' | 'boolean';
-    function query(dataType?: RouteDataTypes, name?: string): (target: Object, key: string) => void;
-    function param(dataType?: RouteDataTypes, name?: string): (target: Object, key: string) => void;
-    type RouteProperties = {
-        [key: string]: RouteDataTypes;
-    };
-    function multiple(parameters: RouteProperties): (target: Object, key: string) => void;
-}
-declare namespace state {
-    function session(): (target: Object, key: string) => void;
-    function persisted(): (target: Object, key: string) => void;
 }
 declare namespace ng1Template.core {
     /**

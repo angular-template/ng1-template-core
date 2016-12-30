@@ -6,10 +6,11 @@
         "declaration": true,
         "outFile": "./dist/core.js"
     },
+    "files": [
+        "src/module.ts"
+    ],
     "include": [
-        "src/module.ts",
-        "src/storage.service.ts",
-        "src/registration/**/*.ts"
+        "src/**/*.ts"
     ],
     "exclude": [
         "bower_components",

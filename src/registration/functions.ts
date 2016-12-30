@@ -1,27 +1,4 @@
 namespace ng1Template.core {
-    export interface IComponentRegistration {
-        name: string;
-        controller: Function | ng.Injectable<ng.IControllerConstructor>;
-        templateUrl: string;
-        templateUrlRoot?: string;
-        bindings?: { [binding: string]: string };
-        route?: IComponentRoute;
-    }
-
-    export interface IComponentRoute {
-        path: string;
-        resolve?: { [key: string]: Function };
-        params?: { [name: string]: string | IRouteParamsValue };
-        abstract?: boolean;
-        parent?: string | IComponentRegistration;
-    }
-
-    export interface IRouteParamsValue {
-        value?: any;
-        array?: boolean;
-        squash?: boolean | string;
-    }
-
     export function registerComponent(
         reg: IComponentRegistration,
         module: ng.IModule
@@ -123,13 +100,6 @@ namespace ng1Template.core {
         }
     }
 
-    export interface ILayoutRegistration {
-        name: string;
-        controller: Function | ng.Injectable<ng.IControllerConstructor>;
-        templateUrl: string;
-        templateUrlRoot?: string;
-    }
-
     export function registerLayout(
         reg: ILayoutRegistration,
         module: ng.IModule
@@ -149,20 +119,8 @@ namespace ng1Template.core {
         }, module);
     }
 
-    export interface IServiceRegistration {
-        name: string;
-        service: Function;
-        module: ng.IModule;
-    }
-
     export function registerService(reg: IServiceRegistration) {
         reg.module.service(_.camelCase(reg.name), reg.service);
-    }
-
-    export interface IStateRegistration {
-        name: string;
-        state: Function;
-        module: ng.IModule;
     }
 
     export function registerState(reg: IStateRegistration) {

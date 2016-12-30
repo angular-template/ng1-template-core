@@ -7,7 +7,7 @@ namespace ng1Template.core {
 
         constructor(private $window: ng.IWindowService) {
             if (typeof Storage === 'undefined') {
-                throw Error(`This browser does not support local or session storage.`);
+                throw new Error(`This browser does not support local or session storage.`);
             }
         }
 

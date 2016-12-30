@@ -32,127 +32,6 @@ var bind;
     }
     bind.event = event;
 })(bind || (bind = {}));
-var ng1Template;
-(function (ng1Template) {
-    var core;
-    (function (core) {
-        function registerComponent(reg, module) {
-            //Provide default for templateUrlRoot, if not specified, and ensure it starts and ends with a '/'.
-            var templateUrlRoot = reg.templateUrlRoot || "/client/modules/" + module.name + "/";
-            if (!_.startsWith(templateUrlRoot, '/')) {
-                templateUrlRoot = '/' + templateUrlRoot;
-            }
-            if (!_.endsWith(templateUrlRoot, '/')) {
-                templateUrlRoot += '/';
-            }
-            //TODO: Template URL root should start and end with '/'
-            //Provide default for templateUrl, if not specified, and ensure that it does not start with a '/'.
-            var templateUrl = reg.templateUrl || reg.name + "/" + reg.name + ".html";
-            if (_.startsWith(templateUrl, '/')) {
-                templateUrl = templateUrl.substr(1);
-            }
-            //Read the bindings declared using the @bind decorators and add them to an object.
-            var bindings = reg.controller['bindings'] ? {} : undefined;
-            if (bindings) {
-                for (var b in reg.controller['bindings']) {
-                    if (reg.controller['bindings'].hasOwnProperty(b)) {
-                        bindings[b] = reg.controller['bindings'][b];
-                    }
-                }
-            }
-            module.component(_.camelCase(reg.name), {
-                templateUrl: "" + templateUrlRoot + templateUrl,
-                controller: reg.controller,
-                controllerAs: _.camelCase(reg.name),
-                bindings: bindings
-            });
-            if (reg.route) {
-                var route_1 = reg.route;
-                //Read the resolves declared using the @resolved and @resolver decorators and add them
-                //to any existing resolves declared as part of the @Page declaration.
-                var resolves_1 = route_1.resolve || {};
-                var declaredResolves = reg.controller['resolves'] ? {} : undefined;
-                if (declaredResolves) {
-                    for (var r in reg.controller['resolves']) {
-                        if (reg.controller['resolves'].hasOwnProperty(r)) {
-                            resolves_1[r] = reg.controller['resolves'][r];
-                        }
-                    }
-                }
-                //From the full set of resolves, build the attribute string to add to the template string.
-                var resolveAttrs = [];
-                if (resolves_1) {
-                    for (var resolveKey in resolves_1) {
-                        if (resolves_1.hasOwnProperty(resolveKey)) {
-                            resolveAttrs.push(_.kebabCase(resolveKey) + "=\"$resolve." + resolveKey + "\"");
-                        }
-                    }
-                }
-                var template_1 = resolveAttrs.length === 0 ?
-                    "<" + reg.name + "></" + reg.name + ">" :
-                    "<" + reg.name + " " + resolveAttrs.join(' ') + "></" + reg.name + ">";
-                module.config(['$stateProvider',
-                    function ($stateProvider) {
-                        //Ensure route path specified and starts with a '/'
-                        var routePath = route_1.path;
-                        if (!routePath) {
-                            throw new Error("Specify a route path for the page " + reg.name + ".");
-                        }
-                        if (routePath !== '^' && !_.startsWith(routePath, '/')) {
-                            routePath = '/' + routePath;
-                        }
-                        //TODO: Use component field instead of template. Consult Sunny and see if component is available in current version of ui-router.
-                        var state = {
-                            name: reg.name,
-                            template: template_1,
-                            url: routePath,
-                            resolve: resolves_1,
-                            params: route_1.params
-                        };
-                        if (route_1.abstract !== undefined) {
-                            state.abstract = route_1.abstract;
-                        }
-                        if (route_1.parent) {
-                            var parent_1 = route_1.parent;
-                            if (typeof parent_1 === 'string') {
-                                state.parent = parent_1;
-                            }
-                            else {
-                                state.parent = parent_1.name;
-                            }
-                        }
-                        $stateProvider.state(state);
-                    }
-                ]);
-            }
-        }
-        core.registerComponent = registerComponent;
-        function registerLayout(reg, module) {
-            var matches = reg.name.match(/^(\w+)-layout$/);
-            var layoutName = matches ? matches[1] : reg.name;
-            var templateUrl = reg.templateUrl || "layouts/" + layoutName + "/" + layoutName + ".html";
-            registerComponent({
-                name: reg.name,
-                controller: reg.controller,
-                templateUrl: templateUrl,
-                templateUrlRoot: reg.templateUrlRoot,
-                route: {
-                    abstract: true,
-                    path: '^'
-                }
-            }, module);
-        }
-        core.registerLayout = registerLayout;
-        function registerService(reg) {
-            reg.module.service(_.camelCase(reg.name), reg.service);
-        }
-        core.registerService = registerService;
-        function registerState(reg) {
-            reg.module.service(_.camelCase(reg.name), reg.state);
-        }
-        core.registerState = registerState;
-    })(core = ng1Template.core || (ng1Template.core = {}));
-})(ng1Template || (ng1Template = {}));
 function resolved(target, key) {
     if (!target.constructor['bindings']) {
         target.constructor['bindings'] = {};
@@ -331,6 +210,127 @@ var ng1Template;
 (function (ng1Template) {
     var core;
     (function (core) {
+        function registerComponent(reg, module) {
+            //Provide default for templateUrlRoot, if not specified, and ensure it starts and ends with a '/'.
+            var templateUrlRoot = reg.templateUrlRoot || "/client/modules/" + module.name + "/";
+            if (!_.startsWith(templateUrlRoot, '/')) {
+                templateUrlRoot = '/' + templateUrlRoot;
+            }
+            if (!_.endsWith(templateUrlRoot, '/')) {
+                templateUrlRoot += '/';
+            }
+            //TODO: Template URL root should start and end with '/'
+            //Provide default for templateUrl, if not specified, and ensure that it does not start with a '/'.
+            var templateUrl = reg.templateUrl || reg.name + "/" + reg.name + ".html";
+            if (_.startsWith(templateUrl, '/')) {
+                templateUrl = templateUrl.substr(1);
+            }
+            //Read the bindings declared using the @bind decorators and add them to an object.
+            var bindings = reg.controller['bindings'] ? {} : undefined;
+            if (bindings) {
+                for (var b in reg.controller['bindings']) {
+                    if (reg.controller['bindings'].hasOwnProperty(b)) {
+                        bindings[b] = reg.controller['bindings'][b];
+                    }
+                }
+            }
+            module.component(_.camelCase(reg.name), {
+                templateUrl: "" + templateUrlRoot + templateUrl,
+                controller: reg.controller,
+                controllerAs: _.camelCase(reg.name),
+                bindings: bindings
+            });
+            if (reg.route) {
+                var route_1 = reg.route;
+                //Read the resolves declared using the @resolved and @resolver decorators and add them
+                //to any existing resolves declared as part of the @Page declaration.
+                var resolves_1 = route_1.resolve || {};
+                var declaredResolves = reg.controller['resolves'] ? {} : undefined;
+                if (declaredResolves) {
+                    for (var r in reg.controller['resolves']) {
+                        if (reg.controller['resolves'].hasOwnProperty(r)) {
+                            resolves_1[r] = reg.controller['resolves'][r];
+                        }
+                    }
+                }
+                //From the full set of resolves, build the attribute string to add to the template string.
+                var resolveAttrs = [];
+                if (resolves_1) {
+                    for (var resolveKey in resolves_1) {
+                        if (resolves_1.hasOwnProperty(resolveKey)) {
+                            resolveAttrs.push(_.kebabCase(resolveKey) + "=\"$resolve." + resolveKey + "\"");
+                        }
+                    }
+                }
+                var template_1 = resolveAttrs.length === 0 ?
+                    "<" + reg.name + "></" + reg.name + ">" :
+                    "<" + reg.name + " " + resolveAttrs.join(' ') + "></" + reg.name + ">";
+                module.config(['$stateProvider',
+                    function ($stateProvider) {
+                        //Ensure route path specified and starts with a '/'
+                        var routePath = route_1.path;
+                        if (!routePath) {
+                            throw new Error("Specify a route path for the page " + reg.name + ".");
+                        }
+                        if (routePath !== '^' && !_.startsWith(routePath, '/')) {
+                            routePath = '/' + routePath;
+                        }
+                        //TODO: Use component field instead of template. Consult Sunny and see if component is available in current version of ui-router.
+                        var state = {
+                            name: reg.name,
+                            template: template_1,
+                            url: routePath,
+                            resolve: resolves_1,
+                            params: route_1.params
+                        };
+                        if (route_1.abstract !== undefined) {
+                            state.abstract = route_1.abstract;
+                        }
+                        if (route_1.parent) {
+                            var parent_1 = route_1.parent;
+                            if (typeof parent_1 === 'string') {
+                                state.parent = parent_1;
+                            }
+                            else {
+                                state.parent = parent_1.name;
+                            }
+                        }
+                        $stateProvider.state(state);
+                    }
+                ]);
+            }
+        }
+        core.registerComponent = registerComponent;
+        function registerLayout(reg, module) {
+            var matches = reg.name.match(/^(\w+)-layout$/);
+            var layoutName = matches ? matches[1] : reg.name;
+            var templateUrl = reg.templateUrl || "layouts/" + layoutName + "/" + layoutName + ".html";
+            registerComponent({
+                name: reg.name,
+                controller: reg.controller,
+                templateUrl: templateUrl,
+                templateUrlRoot: reg.templateUrlRoot,
+                route: {
+                    abstract: true,
+                    path: '^'
+                }
+            }, module);
+        }
+        core.registerLayout = registerLayout;
+        function registerService(reg) {
+            reg.module.service(_.camelCase(reg.name), reg.service);
+        }
+        core.registerService = registerService;
+        function registerState(reg) {
+            reg.module.service(_.camelCase(reg.name), reg.state);
+        }
+        core.registerState = registerState;
+    })(core = ng1Template.core || (ng1Template.core = {}));
+})(ng1Template || (ng1Template = {}));
+var ng1Template;
+(function (ng1Template) {
+    var core;
+    (function (core) {
         /**
          * Angular service that exposes the HTML5 local storage and session storage capabilities.
          */
@@ -338,7 +338,7 @@ var ng1Template;
             function StorageService($window) {
                 this.$window = $window;
                 if (typeof Storage === 'undefined') {
-                    throw Error("This browser does not support local or session storage.");
+                    throw new Error("This browser does not support local or session storage.");
                 }
             }
             StorageService.prototype.getLocal = function (key) {
