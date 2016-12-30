@@ -1,5 +1,4 @@
-
-
+/// <reference types="angular" />
 declare namespace ng1Template.core {
     const coreModule: ng.IModule;
 }
@@ -102,6 +101,7 @@ declare namespace ng1Template.core {
      */
     class StorageService {
         private $window;
+        static $inject: string[];
         constructor($window: ng.IWindowService);
         getLocal(key: string): any;
         getSession(key: string): any;

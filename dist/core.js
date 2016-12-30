@@ -1,5 +1,3 @@
-
-
 var ng1Template;
 (function (ng1Template) {
     var core;
@@ -7,8 +5,6 @@ var ng1Template;
         core.coreModule = angular.module('ng1Template.core', []);
     })(core = ng1Template.core || (ng1Template.core = {}));
 })(ng1Template || (ng1Template = {}));
-
-
 var bind;
 (function (bind) {
     function getDecoratorFunction(binding) {
@@ -36,10 +32,6 @@ var bind;
     }
     bind.event = event;
 })(bind || (bind = {}));
-
-
-
-
 var ng1Template;
 (function (ng1Template) {
     var core;
@@ -161,8 +153,6 @@ var ng1Template;
         core.registerState = registerState;
     })(core = ng1Template.core || (ng1Template.core = {}));
 })(ng1Template || (ng1Template = {}));
-
-
 function resolved(target, key) {
     if (!target.constructor['bindings']) {
         target.constructor['bindings'] = {};
@@ -263,8 +253,6 @@ var route;
         }
     }
 })(route || (route = {}));
-
-
 var state;
 (function (state) {
     function getDecoratorFunction(type) {
@@ -339,8 +327,6 @@ var state;
     }
     state.persisted = persisted;
 })(state || (state = {}));
-
-
 var ng1Template;
 (function (ng1Template) {
     var core;
@@ -349,8 +335,6 @@ var ng1Template;
          * Angular service that exposes the HTML5 local storage and session storage capabilities.
          */
         var StorageService = (function () {
-            /* @ngInject */
-            StorageService.$inject = ["$window"];
             function StorageService($window) {
                 this.$window = $window;
                 if (typeof Storage === 'undefined') {
@@ -377,6 +361,7 @@ var ng1Template;
             };
             return StorageService;
         }());
+        StorageService.$inject = ['$window'];
         core.StorageService = StorageService;
         core.coreModule.service('storageService', StorageService);
     })(core = ng1Template.core || (ng1Template.core = {}));

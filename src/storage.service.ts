@@ -1,12 +1,10 @@
-/// <reference path="../typings/index.d.ts"/>
-/// <reference path="../typings/package.d.ts"/>
-
 namespace ng1Template.core {
     /**
      * Angular service that exposes the HTML5 local storage and session storage capabilities.
      */
     export class StorageService {
-        /* @ngInject */
+        public static $inject = ['$window'];
+
         constructor(private $window: ng.IWindowService) {
             if (typeof Storage === 'undefined') {
                 throw Error(`This browser does not support local or session storage.`);

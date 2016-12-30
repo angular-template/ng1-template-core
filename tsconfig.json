@@ -3,12 +3,10 @@
         "target": "ES5",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "outFile": "core.js",
-        "declaration": true
+        "declaration": true,
+        "outFile": "./dist/core.js"
     },
     "include": [
-        "typings/index.d.ts",
-        "typings/package.d.ts",
         "src/module.ts",
         "src/storage.service.ts",
         "src/registration/**/*.ts"

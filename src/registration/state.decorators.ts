@@ -1,6 +1,3 @@
-/// <reference path="../../typings/index.d.ts"/>
-/// <reference path="../../typings/package.d.ts"/>
-
 namespace state {
     function getDecoratorFunction(type: number) {
         return function(target: Object, key: string) {
