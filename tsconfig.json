@@ -4,7 +4,9 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "declaration": true,
-        "outFile": "./dist/core.js"
+        "outFile": "index.js",
+        "inlineSources": true,
+        "inlineSourceMap": true
     },
     "files": [
         "src/module.ts"
@@ -15,7 +17,6 @@
     "exclude": [
         "bower_components",
         "dist",
-        "node_modules",
-        "typings"
+        "node_modules"
     ]
 }

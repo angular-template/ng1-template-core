@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "bower install",
-    "clean": "rimraf ./dist/",
+    "clean": "rimraf index.js index.d.ts",
     "build": "npm run clean && tsc"
   },
   "repository": {

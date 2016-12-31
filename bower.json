@@ -1,7 +1,7 @@
 {
   "name": "ng1-template-core",
   "description": "Core package for the Angular 1.x template",
-  "main": "dist/core.js",
+  "main": "index.js",
   "authors": [
     "Angular Template <angular-template@jeevanjames.com"
   ],
