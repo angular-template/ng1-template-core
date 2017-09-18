@@ -20,7 +20,7 @@
   "homepage": "https://github.com/angular-template/ng1-template-core#readme",
   "devDependencies": {
     "@types/angular": "^1.5.22",
-    "@types/angular-ui-router": "^1.1.36",
+    "@types/angular-ui-router": "^1.1.39",
     "@types/jquery": "^2.0.34",
     "@types/lodash": "^4.14.45",
     "rimraf": "^2.5.4",
